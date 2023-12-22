@@ -2,14 +2,15 @@ using UnityEngine;
 
 namespace StdNounou
 {
+    [System.Serializable]
     public class StatsModifier : ITickable
     {
         [field: SerializeField, ReadOnly] public SO_StatModifierData Data { get; private set; }
-        [SerializeField, ReadOnly] private MonoStatsHandler handler;
+        [SerializeField, ReadOnly] private StatsHandler handler;
 
         private int currentTicks;
 
-        public StatsModifier(SO_StatModifierData data, MonoStatsHandler handler)
+        public StatsModifier(SO_StatModifierData data, StatsHandler handler)
         {
             this.Data = data;
             this.handler = handler;

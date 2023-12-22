@@ -14,10 +14,22 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
 
     [field: SerializeField] public SO_WeaponData InitialWeapon { get; private set; } 
     [field: SerializeField, ReadOnly] public SO_WeaponData CurrentWeapon { get; private set; }
+    [field: SerializeField, ReadOnly] public SO_EntityWeaponsModifiers OwnerWeaponModifiers { get; private set; }
 
     [SerializeField, ReadOnly] private float cooldown;
 
     protected bool isSetup;
+
+    private S_WeaponData weaponResultData;
+
+    public struct S_WeaponData
+    {
+        public float damages;
+        public float critChances;
+        public float critMultiplier;
+        public float speed;
+        public float cooldown;
+    }
 
     protected override void Awake()
     {
@@ -25,6 +37,8 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         owner = ownerObj.GetComponent<IComponentHolder>();
         
         owner.HolderTryGetComponent(IComponentHolder.E_Component.StatsHandler, out ownerStats);
+        owner.HolderTryGetComponent(IComponentHolder.E_Component.WeaponStatsModifierHandler, out EntityWeaponsModifierHandler handler);
+        OwnerWeaponModifiers = handler.Modifiers;
         SetNewWeapon(InitialWeapon);
     }
 
@@ -65,8 +79,32 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
             this.LogError($"Weapon {CurrentWeapon} did not have cooldown stat.");
 
         animator.SetTrigger("Fire");
-        CurrentWeapon.WeaponBehavior.Execute(firePointTransform.position, firePointTransform.rotation, MouseUtils.GetMouseWorldPosition(), CurrentWeapon.WeaponStats, ownerStats);
+        SetWeaponResultData();
+        CurrentWeapon.WeaponBehavior.Execute(firePointTransform.position, firePointTransform.rotation, MouseUtils.GetMouseWorldPosition(), weaponResultData);
+    }
+
+    private void SetWeaponResultData()
+    {
+        weaponResultData.damages = GetFinalStat(IStatContainer.E_StatType.BaseDamages);
+        weaponResultData.critChances = GetFinalStat(IStatContainer.E_StatType.CritChances);
+        weaponResultData.critMultiplier = GetFinalStat(IStatContainer.E_StatType.CritMultiplier);
+        weaponResultData.speed = GetFinalStat(IStatContainer.E_StatType.Speed);
+        weaponResultData.cooldown = GetFinalStat(IStatContainer.E_StatType.AttackCooldown);
+    }
+
+    private float GetFinalStat(IStatContainer.E_StatType statType)
+    {
+        float weaponStat = 0;
+        float modifierValue = 0;
+
+        if (!CurrentWeapon.WeaponStats.TryGetStatValue(statType, out weaponStat)) weaponStat = 0;
+
+        if (OwnerWeaponModifiers.TryGetStatsModifiersHandler(CurrentWeapon.WeaponID, out StatsHandler stats))
+            if (!stats.TryGetFinalStat(statType, out modifierValue)) modifierValue = 0;
+
+        return weaponStat + modifierValue;
     }
 
     protected abstract void OnCooldownEnded();
+
 }

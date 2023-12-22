@@ -23,6 +23,7 @@ public interface IComponentHolder
         AnimationController,
         InputsHandler,
         AudioPlayer,
+        WeaponStatsModifierHandler
     }
 
     public enum E_Result

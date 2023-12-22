@@ -5,12 +5,25 @@ using static StdNounou.IStatContainer;
 
 namespace StdNounou
 {
+    public class MonoStatsHandler : MonoBehaviour
+    {
+        [field: SerializeField] public StatsHandler StatsHandler { get; private set; }
+
+        private void Awake()
+        {
+            StatsHandler.InitializeDictionaries();
+        }
+    }
+
+    [System.Serializable]
     public class StatsHandler
     {
+        public StatsHandler(SO_BaseStats baseStats)
+        {
+            this.BaseStats = baseStats;
+            InitializeDictionaries();
+        }
 
-    }
-    public class MonoStatsHandler : MonoBehaviourEventsHandler
-    {
         [field: SerializeField] public SO_BaseStats BaseStats { get; private set; }
         public Dictionary<E_StatType, float> PermanentBonusStats { get; protected set; } = new Dictionary<E_StatType, float>();
         public Dictionary<E_StatType, float> TemporaryBonusStats { get; protected set; } = new Dictionary<E_StatType, float>();
@@ -42,18 +55,14 @@ namespace StdNounou
             public float FinalValue { get; private set; }
         }
 
-        protected override void EventsSubscriber() { }
-        protected override void EventsUnSubscriber() { }
-
-        protected override void Awake()
+        public void InitializeDictionaries()
         {
-            base.Awake();
-            InitializeDictionaries();
-        }
-
-        protected void InitializeDictionaries()
-        {
+            PermanentBonusStats = new Dictionary<E_StatType, float>();
+            TemporaryBonusStats = new Dictionary<E_StatType, float>();
             BrutFinalStats = new Dictionary<E_StatType, float>();
+
+            UniqueStatsModifiers = new Dictionary<string, StatsModifier>();
+            StackableStatsModifiers = new Dictionary<string, List<StatsModifier>>();
             if (BaseStats == null)
             {
                 this.LogError("Stats SO was not set.");
@@ -222,5 +231,5 @@ namespace StdNounou
 
         public SO_BaseStats.E_Team GetTeam()
             => BaseStats.Team;
-    } 
+    }
 }

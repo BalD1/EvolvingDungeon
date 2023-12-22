@@ -2,20 +2,20 @@ using StdNounou;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(MonoStatsHandler))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class Bullet : MonoBehaviour, IProjectile<Bullet>
 {
     [SerializeField] private Rigidbody2D body;
     [SerializeField] private float lifetime = 10;
 
-    [SerializeField] private MonoStatsHandler selfStats;
-
     private Coroutine waitCoroutine;
     private WaitForSeconds waitBeforeKill;
 
+    private WeaponHandler.S_WeaponData weaponData;
+
     private void Reset()
     {
-        selfStats = this.GetComponent<MonoStatsHandler>();
+        body = this.GetComponent<Rigidbody2D>();
     }
 
     private void Awake()
@@ -26,15 +26,16 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
     public Bullet GetNext(Vector2 position, Quaternion rotation)
         => PoolsManager.Instance.BulletsPool.GetNext(position, rotation);
 
-    public void Launch(Vector2 direction, float force, float damages, float critChances, float critMultiplier)
+    public void Launch(Vector2 direction, WeaponHandler.S_WeaponData weaponData)
     {
+        this.weaponData = weaponData;
         waitCoroutine = StartCoroutine(KillCoroutine());
 
         Vector2 aimTargetPosition = direction;
         Vector2 aimerPosition = this.transform.position;
         Vector2 dir = (aimTargetPosition - aimerPosition);
         dir.Normalize();
-        this.body.AddForce(dir * force, ForceMode2D.Impulse);
+        this.body.AddForce(dir * weaponData.speed, ForceMode2D.Impulse);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

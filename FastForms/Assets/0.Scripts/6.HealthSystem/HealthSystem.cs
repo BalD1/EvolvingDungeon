@@ -31,12 +31,12 @@ namespace StdNounou
 
         protected override void EventsSubscriber()
         {
-            Stats.OnStatChange += OnStatChange;
+            Stats.StatsHandler.OnStatChange += OnStatChange;
         }
 
         protected override void EventsUnSubscriber()
         {
-            Stats.OnStatChange -= OnStatChange;
+            Stats.StatsHandler.OnStatChange -= OnStatChange;
         }
 
         protected override void Awake()
@@ -51,7 +51,7 @@ namespace StdNounou
             if (InvincibilityTimer > 0) InvincibilityTimer -= Time.deltaTime;
         }
 
-        private void OnStatChange(MonoStatsHandler.StatChangeEventArgs args)
+        private void OnStatChange(StatsHandler.StatChangeEventArgs args)
         {
             if (args.Type == IStatContainer.E_StatType.MaxHP) UpdateMaxHealth(args.FinalValue, true);
         }
@@ -59,7 +59,7 @@ namespace StdNounou
         private void Setup()
         {
             float maxHealth = -1;
-            if (!Stats.TryGetFinalStat(IStatContainer.E_StatType.MaxHP, out maxHealth))
+            if (!Stats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.MaxHP, out maxHealth))
                 this.Log("Could not find max HP in Stats");
 
             UpdateMaxHealth(maxHealth, false);
@@ -70,7 +70,7 @@ namespace StdNounou
         {
             float pastHealth = CurrentMaxHealth;
 
-            if (!Stats.TryGetFinalStat(IStatContainer.E_StatType.MaxHP, out float maxAllowedHealth))
+            if (!Stats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.MaxHP, out float maxAllowedHealth))
                 maxAllowedHealth = newHealth;
 
             CurrentMaxHealth = Mathf.Clamp(CurrentHealth + newHealth, 0, maxAllowedHealth);
@@ -86,8 +86,8 @@ namespace StdNounou
         {
             if (!IsAlive()) return false;
             if (InvincibilityTimer > 0) return false;
-            if (this.Stats.GetTeam() != SO_BaseStats.E_Team.Neutral &&
-                this.Stats.GetTeam() == damagesData.DamagerTeam) return false;
+            if (this.Stats.StatsHandler.GetTeam() != SO_BaseStats.E_Team.Neutral &&
+                this.Stats.StatsHandler.GetTeam() == damagesData.DamagerTeam) return false;
 
             InflictDamages(damagesData);
             return true;

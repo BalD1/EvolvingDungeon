@@ -60,7 +60,7 @@ namespace StdNounou
 
         private void SetDamagesData()
         {
-            ownerStats.TryGetFinalStat(IStatContainer.E_StatType.BaseDamages, out float ownerDamagesStat);
+            ownerStats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.BaseDamages, out float ownerDamagesStat);
             bool isCrit = RandomExtensions.PercentageChance(Data.CritChances);
             damagesData.SetIsCrit(isCrit);
 
@@ -68,7 +68,7 @@ namespace StdNounou
             else
             {
                 float ownerCritMultiplier = -1;
-                if (!ownerStats.TryGetFinalStat(IStatContainer.E_StatType.CritMultiplier, out ownerCritMultiplier))
+                if (!ownerStats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.CritMultiplier, out ownerCritMultiplier))
                     ownerCritMultiplier = 1;
                 damagesData.SetDamages(ownerDamagesStat * Data.Damages * ownerCritMultiplier * Data.CritMultiplier);
             }

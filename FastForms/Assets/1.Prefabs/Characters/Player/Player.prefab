@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1245926135209147417}
   - component: {fileID: 1245926135209147423}
-  - component: {fileID: 1245926135209147420}
+  - component: {fileID: 2244500469527586515}
+  - component: {fileID: 7162031231945334073}
   - component: {fileID: 1245926135209147421}
   m_Layer: 0
   m_Name: Player
@@ -53,15 +54,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <OwnerComponents>k__BackingField:
     _serializedList:
+    - Key: 7
+      Value: {fileID: 7162031231945334073}
     - Key: 4
       Value: {fileID: 1245926135982689176}
     - Key: 0
-      Value: {fileID: 1245926135209147420}
+      Value: {fileID: 2244500469527586515}
     - Key: 3
       Value: {fileID: 1245926136598120591}
     - Key: 2
       Value: {fileID: 1245926135209147421}
---- !u!114 &1245926135209147420
+  modif: {fileID: 11400000, guid: fec98ca0a492d2e478778b84c0f92057, type: 2}
+--- !u!114 &2244500469527586515
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,10 +74,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1245926135209147416}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55da2087fb691d14099a274ac7851435, type: 3}
+  m_Script: {fileID: 11500000, guid: 40d2216d048d5314c8a3c6e7ced572c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <BaseStats>k__BackingField: {fileID: 11400000, guid: 0879e51cfa6f02040b833c07c50965b9, type: 2}
+  <StatsHandler>k__BackingField:
+    <BaseStats>k__BackingField: {fileID: 11400000, guid: 0879e51cfa6f02040b833c07c50965b9, type: 2}
+--- !u!114 &7162031231945334073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245926135209147416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a326b54a1d13d4a91d24675f96f62c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Modifiers>k__BackingField: {fileID: 11400000, guid: 7bc7ffc77aeaaa146aeae2c076fa2ad6, type: 2}
 --- !u!50 &1245926135209147421
 Rigidbody2D:
   serializedVersion: 4

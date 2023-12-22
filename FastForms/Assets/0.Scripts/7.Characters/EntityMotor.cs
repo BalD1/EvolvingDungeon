@@ -41,7 +41,7 @@ public abstract class EntityMotor<T> : ObjectMotor
     public override void MoveByVelocity()
     {
         if (stayStatic) return;
-        ownerStats.TryGetFinalStat(IStatContainer.E_StatType.Speed, out float speed);
+        ownerStats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.Speed, out float speed);
         Velocity = Vector2.ClampMagnitude(Velocity, speed);
 
         if (Velocity.x != 0)
@@ -53,7 +53,7 @@ public abstract class EntityMotor<T> : ObjectMotor
     public override void MoveTo(Vector2 goalPosition, bool steerVelocity)
     {
         Vector2 finalMovement = Vector2.zero;
-        ownerStats.TryGetFinalStat(IStatContainer.E_StatType.Speed, out float speed);
+        ownerStats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.Speed, out float speed);
 
         if (steerVelocity)
         {
