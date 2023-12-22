@@ -1,0 +1,30 @@
+using UnityEditor;
+using static StdNounou.EditorUtils;
+
+[CustomEditor(typeof(#SCRIPTNAME#))]
+public class #SCRIPTNAME# : Editor
+{
+	private #SCRIPTNAME# targetScript;
+    #NOTRIM#
+    private bool showDefaultInspector = false;
+    #NOTRIM#
+	private void OnEnable()
+    {
+        targetScript = (#SCRIPTNAME#)target;
+    }
+    #NOTRIM#
+    public override void OnInspectorGUI()
+    {
+        showDefaultInspector = EditorGUILayout.Toggle("Show Default Inspector", showDefaultInspector);
+        ReadOnlyDraws.EditorScriptDraw(typeof(ED_#SCRIPTNAME#), this);
+        if (showDefaultInspector)
+        {
+            base.DrawDefaultInspector();
+            return;
+        }
+        #NOTRIM#
+        ReadOnlyDraws.ScriptDraw(typeof(#SCRIPTNAME#), targetScript);
+        #NOTRIM#
+        serializedObject.ApplyModifiedProperties();
+    }
+}

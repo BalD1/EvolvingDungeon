@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using StdNounou;
+
+public class #SCRIPTNAME# : Singleton<#SCRIPTNAME#>
+{
+        protected override void EventsSubscriber()
+        {
+        }
+        #NOTRIM#
+        protected override void EventsUnSubscriber()
+        {
+        }
+}

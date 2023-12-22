@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01c019ac4fe81d24bab8a10dcadfe5d1, type: 3}
+  m_Name: UIPrefabs
+  m_EditorClassIdentifier: 
+  assetsDictionnary:
+    _serializedList:
+    - Key: UIButton
+      Value: {fileID: 4742162025321072044, guid: 8000a2ab5bbf0b143a7910f768fc4bc0, type: 3}
+    - Key: UITabElement
+      Value: {fileID: 532874349394079333, guid: e782040465e9b6540b291c1dbbd617a6, type: 3}
+    - Key: UITabButton
+      Value: {fileID: 6136616576244963059, guid: 9660399dac5dfa649a03a90e978b713e, type: 3}
+    - Key: UITabsHandler
+      Value: {fileID: 456159586392984253, guid: 4026660a230502d42befa1c3c1f3ef38, type: 3}
