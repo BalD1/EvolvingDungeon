@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfc5b2e6837aaec4badc6d2f91c0d6dd, type: 3}
   m_Name: SimpleGunData 1
   m_EditorClassIdentifier: 
-  <WeaponID>k__BackingField: SimpleGun
+  <WeaponID>k__BackingField: Caca :D
   <WeaponBehavior>k__BackingField: {fileID: 11400000, guid: 957e84feadd4c5a43a64724591de6918, type: 2}
   <WeaponStats>k__BackingField: {fileID: 11400000, guid: a2d010795a534ad4680e17596e65a2ea, type: 2}
   <InitialProjectilesPoolSize>k__BackingField: 10
