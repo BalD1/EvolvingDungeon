@@ -29,6 +29,7 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
     public void Launch(Vector2 direction, WeaponHandler.S_WeaponData weaponData)
     {
         this.weaponData = weaponData;
+
         waitCoroutine = StartCoroutine(KillCoroutine());
 
         Vector2 aimTargetPosition = direction;
@@ -40,7 +41,8 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (collision.TryGetComponent<IDamageable>(out IDamageable damageable))
+            damageable.TryInflictDamages(new IDamageable.DamagesData(weaponData));
     }
 
     public void Kill()

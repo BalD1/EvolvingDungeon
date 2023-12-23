@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
 namespace StdNounou
 {
     [System.Serializable]
-    public class NewTickDamages : ITickable
+    public class NewTickDamages : ITickable, IDisposable
     {
         [field: SerializeField, ReadOnly] public SO_TickDamagesData Data { get; private set; }
         [SerializeField, ReadOnly] private HealthSystem handler;
@@ -24,6 +25,11 @@ namespace StdNounou
             stats = ownerStats;
             damagesData = new IDamageable.DamagesData();
             SetDamagesData();
+        }
+
+        public void Dispose()
+        {
+            TickManagerEvents.OnTick -= OnTick;
         }
 
         public virtual void OnTick(int tick)

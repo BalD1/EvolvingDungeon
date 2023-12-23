@@ -27,7 +27,7 @@ public class ED_EntityWeaponsModifierHandler : Editor
         ReadOnlyDraws.EditorScriptDraw(typeof(ED_EntityWeaponsModifierHandler), this);
         base.DrawDefaultInspector();
 
-        DrawModifiers();
+        if (Application.isPlaying) DrawModifiers();
         
         serializedObject.ApplyModifiedProperties();
     }
@@ -38,7 +38,7 @@ public class ED_EntityWeaponsModifierHandler : Editor
         if (!drawModifiers) return;
 
         if (targetScript.Modifiers.GetWeaponsDatasDictionary() == null) return;
-        EditorGUILayout.BeginVertical();
+        EditorGUILayout.BeginVertical("GroupBox");
         foreach (var item in targetScript.Modifiers.GetWeaponsDatasDictionary())
         {
             EditorGUILayout.BeginVertical("GroupBox");
@@ -51,6 +51,7 @@ public class ED_EntityWeaponsModifierHandler : Editor
             DisplayStackableStatsModifiers(statsHandler);
             EditorGUILayout.EndVertical();
         }
+        EditorGUILayout.EndVertical();
     }
 
     private void DisplayStatsDictionnary(Dictionary<IStatContainer.E_StatType, float> dictionnary, string label, ref bool foldoutValue)

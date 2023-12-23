@@ -1,5 +1,4 @@
 using AYellowpaper.SerializedCollections;
-using StdNounou;
 using System;
 using UnityEngine;
 using static IComponentHolder;
@@ -9,21 +8,8 @@ public class PlayerCharacter : MonoBehaviour, IComponentHolder
     [field: SerializeField] public SerializedDictionary<E_Component, Component> OwnerComponents {  get; private set; }
     public event Action<ComponentChangeEventArgs> OnComponentModified;
 
-    public SO_StatModifierData modif;
-    public bool lol;
-
     public ExpectedType HolderGetComponent<ExpectedType>(E_Component component) where ExpectedType : Component
         => OwnerComponents[component] as ExpectedType;
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && lol)
-        {
-            EntityWeaponsModifierHandler ewmh = HolderGetComponent<EntityWeaponsModifierHandler>(E_Component.WeaponStatsModifierHandler);
-            ewmh.Modifiers.TryGetWeaponData("SimpleGun", out SO_EntityWeaponsModifiers.WeaponData d);
-            d.weaponStatsModifiersHandler.TryAddModifier(modif, out _);
-        }
-    }
 
     public E_Result HolderTryGetComponent<ExpectedType>(E_Component component, out ExpectedType result) where ExpectedType : Component
     {

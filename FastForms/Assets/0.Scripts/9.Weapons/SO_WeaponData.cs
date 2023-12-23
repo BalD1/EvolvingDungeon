@@ -8,6 +8,7 @@ public class SO_WeaponData : ScriptableObject
     [field: SerializeField] public string WeaponID { get; private set; }
     [field: SerializeField] public SO_WeaponBehavior WeaponBehavior {  get; private set; }
     [field: SerializeField] public SO_BaseStats WeaponStats {  get; private set; }
+    [field: SerializeField] public IDamageable.E_DamagesType DamageType { get; private set; }
     [field: SerializeField] public int InitialProjectilesPoolSize { get; private set; }
 
     [field: SerializeField] public AnimatorController WeaponAnimController { get; private set; }

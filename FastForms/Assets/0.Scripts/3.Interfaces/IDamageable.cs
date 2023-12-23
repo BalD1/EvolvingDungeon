@@ -32,6 +32,15 @@ namespace StdNounou
                 this.Damages = damages;
                 this.IsCrit = isCrit;
             }
+            public DamagesData(WeaponHandler.S_WeaponData weaponData)
+            {
+                this.DamagerTeam = weaponData.team;
+                this.DamagesType = weaponData.damagesType;
+                this.Damages = weaponData.damages;
+
+                this.IsCrit = RandomExtensions.PercentageChance(weaponData.critChances);
+                if (IsCrit) this.Damages *= weaponData.critMultiplier;
+            }
 
             public void SetIsCrit(bool isCrit)
                 => IsCrit = isCrit;

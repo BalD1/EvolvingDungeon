@@ -95,6 +95,7 @@ namespace StdNounou
         public virtual void InflictDamages(DamagesData damagesData)
         {
             CurrentHealth -= damagesData.Damages;
+            this.Log($"Damaged ! {CurrentHealth} / {CurrentMaxHealth}");
             this.OnTookDamages?.Invoke(damagesData);
         }
 

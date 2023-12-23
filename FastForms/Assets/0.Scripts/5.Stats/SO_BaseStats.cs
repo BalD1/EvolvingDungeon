@@ -14,7 +14,7 @@ namespace StdNounou
         public enum E_Team
         {
             Players,
-            Zombies,
+            Enemies,
             Neutral,
         }
 

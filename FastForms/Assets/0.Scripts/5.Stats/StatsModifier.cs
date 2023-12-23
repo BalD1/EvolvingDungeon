@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
 namespace StdNounou
 {
     [System.Serializable]
-    public class StatsModifier : ITickable
+    public class StatsModifier : ITickable, IDisposable
     {
         [field: SerializeField, ReadOnly] public SO_StatModifierData Data { get; private set; }
         [SerializeField, ReadOnly] private StatsHandler handler;
@@ -19,6 +20,12 @@ namespace StdNounou
 
             if (Data.Temporary)
                 TickManagerEvents.OnTick += OnTick;
+        }
+
+        public void Dispose()
+        {
+            if (Data.Temporary)
+                TickManagerEvents.OnTick -= OnTick;
         }
 
         public void Remove()

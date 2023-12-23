@@ -24,22 +24,52 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
 
     public struct S_WeaponData
     {
+        public S_WeaponData(SO_BaseStats.E_Team team, IDamageable.E_DamagesType damagesType, float damages, float critChances,
+                            float critMultiplier, float speed, float cooldown)
+        {
+            this.team = team;
+            this.damagesType = damagesType;
+            this.damages = damages;
+            this.critChances = critChances;
+            this.critMultiplier = critMultiplier;
+            this.speed = speed;
+            this.cooldown = cooldown;
+        }
+        public SO_BaseStats.E_Team team;
+        public IDamageable.E_DamagesType damagesType;
         public float damages;
         public float critChances;
         public float critMultiplier;
         public float speed;
         public float cooldown;
+
+        public void SetData(SO_BaseStats.E_Team team, IDamageable.E_DamagesType damagesType, float damages, float critChances,
+                            float critMultiplier, float speed, float cooldown)
+        {
+            this.team = team;
+            this.damagesType = damagesType;
+            this.damages = damages;
+            this.critChances = critChances;
+            this.critMultiplier = critMultiplier;
+            this.speed = speed;
+            this.cooldown = cooldown;
+        }
+        public void SetData(float damages, float critChances, float critMultiplier, float speed, float cooldown)
+            => SetData(this.team, this.damagesType, damages, critChances, critMultiplier, speed, cooldown);
     }
 
     protected override void Awake()
     {
         base.Awake();
+
         owner = ownerObj.GetComponent<IComponentHolder>();
         
         owner.HolderTryGetComponent(IComponentHolder.E_Component.StatsHandler, out ownerStats);
         owner.HolderTryGetComponent(IComponentHolder.E_Component.WeaponStatsModifierHandler, out EntityWeaponsModifierHandler handler);
         OwnerWeaponModifiers = handler.Modifiers;
         SetNewWeapon(InitialWeapon);
+
+        weaponResultData.team = ownerStats.StatsHandler.GetTeam();
     }
 
     protected virtual void Update()
@@ -60,6 +90,8 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         CurrentWeapon?.WeaponBehavior.OnEnd();
         CurrentWeapon = data;
         CurrentWeapon.WeaponBehavior.OnStart();
+
+        this.weaponResultData.damagesType = data.DamageType;
 
         weaponSpriteRenderer.sprite = data.WeaponSprite;
         weaponSpriteRenderer.gameObject.transform.localPosition = data.SpritePivotOffset;
@@ -95,6 +127,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
     private float GetFinalStat(IStatContainer.E_StatType statType)
     {
         float weaponStat = 0;
+        float ownerStatValue = 0;
         float modifierValue = 0;
 
         if (!CurrentWeapon.WeaponStats.TryGetStatValue(statType, out weaponStat)) weaponStat = 0;
@@ -102,7 +135,9 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         if (OwnerWeaponModifiers.TryGetStatsModifiersHandler(CurrentWeapon.WeaponID, out StatsHandler stats))
             if (!stats.TryGetFinalStat(statType, out modifierValue)) modifierValue = 0;
 
-        return weaponStat + modifierValue;
+        if (!ownerStats.StatsHandler.TryGetFinalStat(statType, out ownerStatValue)) ownerStatValue = 0;
+
+        return weaponStat + ownerStatValue + modifierValue;
     }
 
     protected abstract void OnCooldownEnded();
