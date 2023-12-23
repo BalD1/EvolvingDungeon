@@ -167,9 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179766044b9dbd64bbcc0895483de34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fps: 3
-  lowestFPS: 3
-  highestFPS: 5
+  fps: 100
+  lowestFPS: -2147483648
+  highestFPS: 100
 --- !u!1 &189171276
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,7 +826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <StatsHandler>k__BackingField:
-    <BaseStats>k__BackingField: {fileID: 11400000, guid: 0879e51cfa6f02040b833c07c50965b9, type: 2}
+    <BaseStats>k__BackingField: {fileID: 11400000, guid: 37dffc9207e546341ad14e30c40d513f, type: 2}
 --- !u!61 &1156618559
 BoxCollider2D:
   m_ObjectHideFlags: 0
