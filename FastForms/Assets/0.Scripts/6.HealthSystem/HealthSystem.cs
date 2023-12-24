@@ -10,6 +10,11 @@ namespace StdNounou
     {
         [field: SerializeField] public MonoStatsHandler Stats { get; private set; }
 
+        [SerializeField] private GameObject ownerObj;
+        private IComponentHolder owner;
+
+        [SerializeField] private Rigidbody2D body;
+
         [field: SerializeField, ReadOnly] public float CurrentHealth { get; protected set; }
         [field: SerializeField, ReadOnly] public float CurrentMaxHealth { get; protected set; }
 
@@ -44,11 +49,20 @@ namespace StdNounou
             if (Stats == null) Stats = this.GetComponent<MonoStatsHandler>();
             base.Awake();
             Setup();
+
+            owner = ownerObj.GetComponent<IComponentHolder>();
+            SetupBody();
         }
 
         protected virtual void Update()
         {
             if (InvincibilityTimer > 0) InvincibilityTimer -= Time.deltaTime;
+        }
+
+        private void SetupBody()
+        {
+            if (body != null) return;
+            owner?.HolderTryGetComponent<Rigidbody2D>(IComponentHolder.E_Component.RigidBody2D, out body);
         }
 
         private void OnStatChange(StatsHandler.StatChangeEventArgs args)
@@ -97,6 +111,15 @@ namespace StdNounou
             CurrentHealth -= damagesData.Damages;
             this.OnTookDamages?.Invoke(damagesData);
             CreateUtils.CreateWorldText(damagesData.Damages.ToString(), this.HealthPopupOffset + (Vector2)this.transform.position, 20, damagesData.IsCrit ? Color.red : Color.white, TextAnchor.MiddleCenter, TextAlignment.Center, 0, 2);
+
+            if (body != null) PerformKnockback(damagesData);
+        }
+
+        private void PerformKnockback(DamagesData damagesData)
+        {
+            float ownerWeight = 0;
+            if (!Stats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.Weight, out ownerWeight)) ownerWeight = 0;
+            this.body.AddForce(damagesData.DamagesDirection * (damagesData.KnockbackForce - ownerWeight), ForceMode2D.Impulse);
         }
 
         public void Heal(float amount, bool isCrit)

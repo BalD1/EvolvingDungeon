@@ -27,7 +27,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
     public struct S_WeaponData
     {
         public S_WeaponData(SO_BaseStats.E_Team team, IDamageable.E_DamagesType damagesType, float damages, float critChances,
-                            float critMultiplier, float speed, float cooldown, float piercingValue)
+                            float critMultiplier, float speed, float cooldown, float piercingValue, float knockback)
         {
             this.team = team;
             this.damagesType = damagesType;
@@ -37,6 +37,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
             this.speed = speed;
             this.cooldown = cooldown;
             this.piercingValue = piercingValue;
+            this.knockback = knockback;
         }
         public SO_BaseStats.E_Team team;
         public IDamageable.E_DamagesType damagesType;
@@ -46,6 +47,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         public float speed;
         public float cooldown;
         public float piercingValue;
+        public float knockback;
 
     }
 
@@ -114,6 +116,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         weaponResultData.speed = GetFinalStat(IStatContainer.E_StatType.Speed);
         weaponResultData.cooldown = GetFinalStat(IStatContainer.E_StatType.AttackCooldown);
         weaponResultData.piercingValue = GetFinalStat(IStatContainer.E_StatType.Piercing);
+        weaponResultData.knockback = GetFinalStat(IStatContainer.E_StatType.Knockback);
     }
 
     private float GetFinalStat(IStatContainer.E_StatType statType)

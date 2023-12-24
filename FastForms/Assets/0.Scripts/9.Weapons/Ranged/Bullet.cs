@@ -15,6 +15,8 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     private int currentPiercingCount = 0;
 
+    private Vector2 currentDirection;
+
     private void Reset()
     {
         body = this.GetComponent<Rigidbody2D>();
@@ -36,16 +38,16 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
         Vector2 aimTargetPosition = direction;
         Vector2 aimerPosition = this.transform.position;
-        Vector2 dir = (aimTargetPosition - aimerPosition);
-        dir.Normalize();
-        this.body.AddForce(dir * weaponData.speed, ForceMode2D.Impulse);
+        currentDirection = (aimTargetPosition - aimerPosition);
+        currentDirection.Normalize();
+        this.body.AddForce(currentDirection * weaponData.speed, ForceMode2D.Impulse);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent<IDamageable>(out IDamageable damageable)) return;
 
-        damageable.TryInflictDamages(new IDamageable.DamagesData(weaponData));
+        damageable.TryInflictDamages(new IDamageable.DamagesData(weaponData, currentDirection));
         currentPiercingCount++;
         if (currentPiercingCount >= weaponData.piercingValue) this.Kill();
     }

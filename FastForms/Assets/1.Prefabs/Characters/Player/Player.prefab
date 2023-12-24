@@ -61,6 +61,7 @@ GameObject:
   - component: {fileID: 7162031231945334073}
   - component: {fileID: 1245926135209147421}
   - component: {fileID: 2051228066657111865}
+  - component: {fileID: 5088509795393490344}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -104,6 +105,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <OwnerComponents>k__BackingField:
     _serializedList:
+    - Key: 1
+      Value: {fileID: 5088509795393490344}
     - Key: 8
       Value: {fileID: 1245926136278827348}
     - Key: 7
@@ -193,6 +196,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5088509795393490344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245926135209147416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3be39055f8f0774792bf844de2b37e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Stats>k__BackingField: {fileID: 2244500469527586515}
+  ownerObj: {fileID: 1245926135209147416}
+  body: {fileID: 1245926135209147421}
+  <CurrentHealth>k__BackingField: 0
+  <CurrentMaxHealth>k__BackingField: 0
+  <HealthPopupOffset>k__BackingField: {x: 0, y: 0}
+  <InvincibilityTimer>k__BackingField: 0
+  ED_debugMode: 0
 --- !u!1 &1245926135513833985
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee8e5bbe199b2744ab7dc76739324208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ownerObj: {fileID: 1245926135209147416}
   animator: {fileID: 1245926135982689179}
   rendererTarget: {fileID: 1245926136082685104}
 --- !u!95 &1245926135982689179

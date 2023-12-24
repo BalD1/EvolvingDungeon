@@ -40,3 +40,11 @@ MonoBehaviour:
       Value:
         <Value>k__BackingField: 0
         <HigherAllowedValue>k__BackingField: 99999
+    - Key: 10
+      Value:
+        <Value>k__BackingField: 0
+        <HigherAllowedValue>k__BackingField: 99999
+    - Key: 11
+      Value:
+        <Value>k__BackingField: 0
+        <HigherAllowedValue>k__BackingField: 99999

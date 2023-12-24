@@ -1,5 +1,6 @@
 
 using System;
+using UnityEngine;
 
 namespace StdNounou
 {
@@ -18,6 +19,8 @@ namespace StdNounou
             public E_DamagesType DamagesType { get; private set; }
             public bool IsCrit { get; private set; }
             public float Damages { get; private set; }
+            public Vector3 DamagesDirection { get; private set; }
+            public float KnockbackForce { get; private set; }
 
             public DamagesData()
             {
@@ -25,14 +28,16 @@ namespace StdNounou
                 this.DamagesType = E_DamagesType.Unknown;
                 this.Damages = -1;
             }
-            public DamagesData(SO_BaseStats.E_Team damagerTeam, E_DamagesType damagesType, float damages, bool isCrit)
+            public DamagesData(SO_BaseStats.E_Team damagerTeam, E_DamagesType damagesType, float damages, bool isCrit, Vector3 damageDirection, float knockbackForce)
             {
                 this.DamagerTeam = damagerTeam;
                 this.DamagesType = damagesType;
                 this.Damages = damages;
                 this.IsCrit = isCrit;
+                this.DamagesDirection = damageDirection;
+                KnockbackForce = knockbackForce;
             }
-            public DamagesData(WeaponHandler.S_WeaponData weaponData)
+            public DamagesData(WeaponHandler.S_WeaponData weaponData, Vector2 damageDirection)
             {
                 this.DamagerTeam = weaponData.team;
                 this.DamagesType = weaponData.damagesType;
@@ -40,6 +45,9 @@ namespace StdNounou
 
                 this.IsCrit = RandomExtensions.PercentageChance(weaponData.critChances);
                 if (IsCrit) this.Damages *= weaponData.critMultiplier;
+
+                this.DamagesDirection = damageDirection;
+                this.KnockbackForce = weaponData.knockback;
             }
 
             public void SetIsCrit(bool isCrit)
@@ -47,6 +55,12 @@ namespace StdNounou
 
             public void SetDamages(float damages)
                 => Damages = damages;
+
+            public void SetKnockbackForce(float force)
+                => this.KnockbackForce = force;
+
+            public void SetDamagerPosition(Vector3 damagerPosition)
+                => DamagesDirection = damagerPosition;
         }
 
         public enum E_DamagesType
