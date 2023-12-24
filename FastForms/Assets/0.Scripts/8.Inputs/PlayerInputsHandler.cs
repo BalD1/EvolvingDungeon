@@ -1,8 +1,10 @@
+using StdNounou;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PlayerInput))]
-public class PlayerInputsHandler : MonoBehaviour
+public class PlayerInputsHandler : PersistentSingleton<PlayerInputsHandler>
 {
     [field: SerializeField] public PlayerInput InputsComponent {  get; private set; }
     [field: SerializeField, ReadOnly] public Vector2 MovInputsValue { get; private set; }
@@ -31,5 +33,21 @@ public class PlayerInputsHandler : MonoBehaviour
         }
         IsMouseDown = false;
         this.MouseUp_Call();
+    }
+
+    public void ForceReadMovements()
+    {
+        bool wasMouseDown = IsMouseDown;
+        InputsComponent.currentActionMap.Disable();
+        InputsComponent.currentActionMap.Enable();
+        IsMouseDown = wasMouseDown;
+    }
+
+    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+    }
+
+    protected override void OnSceneUnloaded(Scene scene)
+    {
     }
 }

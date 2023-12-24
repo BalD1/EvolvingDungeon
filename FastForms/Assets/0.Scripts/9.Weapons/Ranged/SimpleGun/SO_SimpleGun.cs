@@ -17,9 +17,4 @@ public class SO_SimpleGun : SO_WeaponBehavior
     public override void OnStart()
     {
     }
-
-    private void Awake()
-    {
-        Debug.Log("awake");
-    }
 }

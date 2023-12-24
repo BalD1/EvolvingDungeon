@@ -1,14 +1,12 @@
 using StdNounou;
 using UnityEngine;
 
-public abstract class EntityMotor<T> : ObjectMotor
-                      where T : AnimationControllerBase
+public abstract class EntityMotor : ObjectMotor
 {
     [SerializeField] private float steeringForce;
     [SerializeField] private float movementMass;
 
     private MonoStatsHandler ownerStats;
-    private T ownerAnimController;
 
     private Vector2 steering;
     private Vector2 steeredVelocity;
@@ -19,7 +17,6 @@ public abstract class EntityMotor<T> : ObjectMotor
     {
         base.SetComponents();
         owner.HolderTryGetComponent(IComponentHolder.E_Component.StatsHandler, out ownerStats);
-        owner.HolderTryGetComponent(IComponentHolder.E_Component.AnimationController, out ownerAnimController);
     }
 
     protected override void OnComponentsModifier(ComponentChangeEventArgs args)
@@ -31,10 +28,6 @@ public abstract class EntityMotor<T> : ObjectMotor
                 ownerStats = args.NewComponent as MonoStatsHandler;
                 break;
 
-            case IComponentHolder.E_Component.AnimationController:
-                ownerAnimController = args.NewComponent as T;
-                break;
-
         }
     }
 
@@ -43,9 +36,6 @@ public abstract class EntityMotor<T> : ObjectMotor
         if (stayStatic) return;
         ownerStats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.Speed, out float speed);
         Velocity = Vector2.ClampMagnitude(Velocity, speed);
-
-        if (Velocity.x != 0)
-            ownerAnimController.TryFlip(Velocity.x > 0);
 
         this.Body.MovePosition(this.Body.position + Velocity * speed * Time.fixedDeltaTime);
     }

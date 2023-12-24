@@ -18,6 +18,8 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
 
     [SerializeField, ReadOnly] private float cooldown;
 
+    [field: SerializeField, ReadOnly] public bool AllowExecution { get; private set; } = true;
+
     protected bool isSetup;
 
     private S_WeaponData weaponResultData;
@@ -25,7 +27,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
     public struct S_WeaponData
     {
         public S_WeaponData(SO_BaseStats.E_Team team, IDamageable.E_DamagesType damagesType, float damages, float critChances,
-                            float critMultiplier, float speed, float cooldown)
+                            float critMultiplier, float speed, float cooldown, float piercingValue)
         {
             this.team = team;
             this.damagesType = damagesType;
@@ -34,6 +36,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
             this.critMultiplier = critMultiplier;
             this.speed = speed;
             this.cooldown = cooldown;
+            this.piercingValue = piercingValue;
         }
         public SO_BaseStats.E_Team team;
         public IDamageable.E_DamagesType damagesType;
@@ -42,20 +45,8 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         public float critMultiplier;
         public float speed;
         public float cooldown;
+        public float piercingValue;
 
-        public void SetData(SO_BaseStats.E_Team team, IDamageable.E_DamagesType damagesType, float damages, float critChances,
-                            float critMultiplier, float speed, float cooldown)
-        {
-            this.team = team;
-            this.damagesType = damagesType;
-            this.damages = damages;
-            this.critChances = critChances;
-            this.critMultiplier = critMultiplier;
-            this.speed = speed;
-            this.cooldown = cooldown;
-        }
-        public void SetData(float damages, float critChances, float critMultiplier, float speed, float cooldown)
-            => SetData(this.team, this.damagesType, damages, critChances, critMultiplier, speed, cooldown);
     }
 
     protected override void Awake()
@@ -122,6 +113,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         weaponResultData.critMultiplier = GetFinalStat(IStatContainer.E_StatType.CritMultiplier);
         weaponResultData.speed = GetFinalStat(IStatContainer.E_StatType.Speed);
         weaponResultData.cooldown = GetFinalStat(IStatContainer.E_StatType.AttackCooldown);
+        weaponResultData.piercingValue = GetFinalStat(IStatContainer.E_StatType.Piercing);
     }
 
     private float GetFinalStat(IStatContainer.E_StatType statType)
@@ -142,4 +134,6 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
 
     protected abstract void OnCooldownEnded();
 
+    public bool SetAllowExecution(bool allow)
+        => AllowExecution = allow;
 }

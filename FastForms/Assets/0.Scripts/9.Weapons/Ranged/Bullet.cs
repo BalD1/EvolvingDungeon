@@ -13,6 +13,8 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     private WeaponHandler.S_WeaponData weaponData;
 
+    private int currentPiercingCount = 0;
+
     private void Reset()
     {
         body = this.GetComponent<Rigidbody2D>();
@@ -41,8 +43,11 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<IDamageable>(out IDamageable damageable))
-            damageable.TryInflictDamages(new IDamageable.DamagesData(weaponData));
+        if (!collision.TryGetComponent<IDamageable>(out IDamageable damageable)) return;
+
+        damageable.TryInflictDamages(new IDamageable.DamagesData(weaponData));
+        currentPiercingCount++;
+        if (currentPiercingCount >= weaponData.piercingValue) this.Kill();
     }
 
     public void Kill()
@@ -52,6 +57,7 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
             StopCoroutine(waitCoroutine);
             waitCoroutine = null;
         }
+        currentPiercingCount = 0;
         PoolsManager.Instance.BulletsPool.Enqueue(this);
     }
 

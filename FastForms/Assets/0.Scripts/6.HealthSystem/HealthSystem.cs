@@ -95,8 +95,8 @@ namespace StdNounou
         public virtual void InflictDamages(DamagesData damagesData)
         {
             CurrentHealth -= damagesData.Damages;
-            this.Log($"Damaged ! {CurrentHealth} / {CurrentMaxHealth}");
             this.OnTookDamages?.Invoke(damagesData);
+            CreateUtils.CreateWorldText(damagesData.Damages.ToString(), this.HealthPopupOffset + (Vector2)this.transform.position, 20, damagesData.IsCrit ? Color.red : Color.white, TextAnchor.MiddleCenter, TextAlignment.Center, 0, 2);
         }
 
         public void Heal(float amount, bool isCrit)

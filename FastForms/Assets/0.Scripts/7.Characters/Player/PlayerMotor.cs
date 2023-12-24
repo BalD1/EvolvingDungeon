@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMotor : EntityMotor<PlayerAnimationController>
+public class PlayerMotor : EntityMotor
 {
     protected override void EventsSubscriber()
     {

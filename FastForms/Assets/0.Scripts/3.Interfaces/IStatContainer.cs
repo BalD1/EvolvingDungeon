@@ -23,6 +23,7 @@ namespace StdNounou
             Speed,
             Weight,
             InvincibilityCooldown,
+            Piercing
         }
 
         [System.Serializable]
