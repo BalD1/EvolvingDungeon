@@ -22,35 +22,6 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
 
     protected bool isSetup;
 
-    private S_WeaponData weaponResultData;
-
-    public struct S_WeaponData
-    {
-        public S_WeaponData(SO_BaseStats.E_Team team, IDamageable.E_DamagesType damagesType, float damages, float critChances,
-                            float critMultiplier, float speed, float cooldown, float piercingValue, float knockback)
-        {
-            this.team = team;
-            this.damagesType = damagesType;
-            this.damages = damages;
-            this.critChances = critChances;
-            this.critMultiplier = critMultiplier;
-            this.speed = speed;
-            this.cooldown = cooldown;
-            this.piercingValue = piercingValue;
-            this.knockback = knockback;
-        }
-        public SO_BaseStats.E_Team team;
-        public IDamageable.E_DamagesType damagesType;
-        public float damages;
-        public float critChances;
-        public float critMultiplier;
-        public float speed;
-        public float cooldown;
-        public float piercingValue;
-        public float knockback;
-
-    }
-
     protected override void Awake()
     {
         base.Awake();
@@ -61,8 +32,6 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         owner.HolderTryGetComponent(IComponentHolder.E_Component.WeaponStatsModifierHandler, out EntityWeaponsModifierHandler handler);
         OwnerWeaponModifiers = handler.Modifiers;
         SetNewWeapon(InitialWeapon);
-
-        weaponResultData.team = ownerStats.StatsHandler.GetTeam();
     }
 
     protected virtual void Update()
@@ -84,8 +53,6 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         CurrentWeapon = data;
         CurrentWeapon.WeaponBehavior.OnStart();
 
-        this.weaponResultData.damagesType = data.DamageType;
-
         weaponSpriteRenderer.sprite = data.WeaponSprite;
         weaponSpriteRenderer.gameObject.transform.localPosition = data.SpritePivotOffset;
         animator.runtimeAnimatorController = data.WeaponAnimController;
@@ -104,35 +71,23 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
             this.LogError($"Weapon {CurrentWeapon} did not have cooldown stat.");
 
         animator.SetTrigger("Fire");
-        SetWeaponResultData();
-        CurrentWeapon.WeaponBehavior.Execute(firePointTransform.position, firePointTransform.rotation, MouseUtils.GetMouseWorldPosition(), weaponResultData);
-    }
 
-    private void SetWeaponResultData()
-    {
-        weaponResultData.damages = GetFinalStat(IStatContainer.E_StatType.BaseDamages);
-        weaponResultData.critChances = GetFinalStat(IStatContainer.E_StatType.CritChances);
-        weaponResultData.critMultiplier = GetFinalStat(IStatContainer.E_StatType.CritMultiplier);
-        weaponResultData.speed = GetFinalStat(IStatContainer.E_StatType.Speed);
-        weaponResultData.cooldown = GetFinalStat(IStatContainer.E_StatType.AttackCooldown);
-        weaponResultData.piercingValue = GetFinalStat(IStatContainer.E_StatType.Piercing);
-        weaponResultData.knockback = GetFinalStat(IStatContainer.E_StatType.Knockback);
-    }
+        SO_WeaponBehavior.S_AttackTransform attackTransform = new SO_WeaponBehavior.S_AttackTransform(
+            pos: firePointTransform.position,
+            rot: firePointTransform.rotation,
+            targPos: MouseUtils.GetMouseWorldPosition()
+            );
 
-    private float GetFinalStat(IStatContainer.E_StatType statType)
-    {
-        float weaponStat = 0;
-        float ownerStatValue = 0;
-        float modifierValue = 0;
+        StatsHandler weaponModifiers = null;
+        this.OwnerWeaponModifiers.TryGetStatsModifiersHandler(this.CurrentWeapon.WeaponID, out weaponModifiers);
 
-        if (!CurrentWeapon.WeaponStats.TryGetStatValue(statType, out weaponStat)) weaponStat = 0;
-
-        if (OwnerWeaponModifiers.TryGetStatsModifiersHandler(CurrentWeapon.WeaponID, out StatsHandler stats))
-            if (!stats.TryGetFinalStat(statType, out modifierValue)) modifierValue = 0;
-
-        if (!ownerStats.StatsHandler.TryGetFinalStat(statType, out ownerStatValue)) ownerStatValue = 0;
-
-        return weaponStat + ownerStatValue + modifierValue;
+        SO_WeaponBehavior.S_TotalStats totalStats = new SO_WeaponBehavior.S_TotalStats(
+            weaponStats: this.CurrentWeapon.WeaponStats,
+            weaponModifiers: weaponModifiers,
+            ownerStats: this.ownerStats.StatsHandler,
+            damageType: CurrentWeapon.DamageType
+            );
+        CurrentWeapon.WeaponBehavior.Execute(ref attackTransform, ref totalStats);
     }
 
     protected abstract void OnCooldownEnded();

@@ -6,9 +6,10 @@ public class SO_SimpleGun : SO_WeaponBehavior
 {
     [field: SerializeField] public Bullet BulletPrefab {  get; private set; }
 
-    public override void Execute(Vector2 position, Quaternion rotation, Vector2 targetPosition, WeaponHandler.S_WeaponData weaponData)
+    public override void Execute(ref S_AttackTransform attackTransform, ref S_TotalStats totalStats)
     {
-        BulletPrefab.GetNext(position, rotation).Launch(targetPosition, weaponData);
+        BulletPrefab.GetNext(attackTransform.Position, attackTransform.Rotation)
+                    .Launch(attackTransform.TargetPosition, ref totalStats);
     }
 
     public override void OnEnd()

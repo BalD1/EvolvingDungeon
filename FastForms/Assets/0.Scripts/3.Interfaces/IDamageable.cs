@@ -37,18 +37,6 @@ namespace StdNounou
                 this.DamagesDirection = damageDirection;
                 KnockbackForce = knockbackForce;
             }
-            public DamagesData(WeaponHandler.S_WeaponData weaponData, Vector2 damageDirection)
-            {
-                this.DamagerTeam = weaponData.team;
-                this.DamagesType = weaponData.damagesType;
-                this.Damages = weaponData.damages;
-
-                this.IsCrit = RandomExtensions.PercentageChance(weaponData.critChances);
-                if (IsCrit) this.Damages *= weaponData.critMultiplier;
-
-                this.DamagesDirection = damageDirection;
-                this.KnockbackForce = weaponData.knockback;
-            }
 
             public void SetIsCrit(bool isCrit)
                 => IsCrit = isCrit;

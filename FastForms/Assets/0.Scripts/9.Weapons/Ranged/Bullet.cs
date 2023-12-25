@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
     private Coroutine waitCoroutine;
     private WaitForSeconds waitBeforeKill;
 
-    private WeaponHandler.S_WeaponData weaponData;
+    private SO_WeaponBehavior.S_TotalStats totalStats;
 
     private int currentPiercingCount = 0;
 
@@ -30,9 +30,9 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
     public Bullet GetNext(Vector2 position, Quaternion rotation)
         => PoolsManager.Instance.BulletsPool.GetNext(position, rotation);
 
-    public void Launch(Vector2 direction, WeaponHandler.S_WeaponData weaponData)
+    public void Launch(Vector2 direction, ref SO_WeaponBehavior.S_TotalStats totalStats)
     {
-        this.weaponData = weaponData;
+        this.totalStats = totalStats;
 
         waitCoroutine = StartCoroutine(KillCoroutine());
 
@@ -40,16 +40,33 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
         Vector2 aimerPosition = this.transform.position;
         currentDirection = (aimTargetPosition - aimerPosition);
         currentDirection.Normalize();
-        this.body.AddForce(currentDirection * weaponData.speed, ForceMode2D.Impulse);
+        this.body.AddForce(currentDirection * totalStats.GetFinalStat(IStatContainer.E_StatType.Speed), ForceMode2D.Impulse);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.TryGetComponent<IDamageable>(out IDamageable damageable)) return;
 
-        damageable.TryInflictDamages(new IDamageable.DamagesData(weaponData, currentDirection));
+        damageable.TryInflictDamages(CreateDamagesData());
         currentPiercingCount++;
-        if (currentPiercingCount >= weaponData.piercingValue) this.Kill();
+        if (currentPiercingCount >= totalStats.GetFinalStat(IStatContainer.E_StatType.Piercing)) this.Kill();
+    }
+
+    private IDamageable.DamagesData CreateDamagesData()
+    {
+        float finalDamages = totalStats.GetFinalStat(IStatContainer.E_StatType.BaseDamages);
+        bool isCrit = RandomExtensions.PercentageChance(totalStats.GetFinalStat(IStatContainer.E_StatType.CritChances));
+
+        if (isCrit) finalDamages *= totalStats.GetFinalStat(IStatContainer.E_StatType.CritMultiplier);
+
+        return new IDamageable.DamagesData(
+            damagerTeam: totalStats.OwnerStats.GetTeam(),
+            damagesType: totalStats.DamageType,
+            damages: finalDamages,
+            isCrit: isCrit,
+            damageDirection: currentDirection,
+            knockbackForce: totalStats.GetFinalStat(IStatContainer.E_StatType.Knockback)
+            );
     }
 
     public void Kill()
