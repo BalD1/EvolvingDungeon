@@ -20,7 +20,7 @@ public class State_Player_Idle : State_Player_Base
     public override void EnterState()
     {
         base.EnterState();
-        PlayerInputsHandler.Instance.ForceReadMovements();
+        //PlayerInputsHandler.Instance.ForceReadMovements();
     }
 
     public override void Update()

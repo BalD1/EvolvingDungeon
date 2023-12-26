@@ -1,3 +1,4 @@
+using com.cyborgAssets.inspectorButtonPro;
 using StdNounou;
 using UnityEngine;
 
@@ -31,7 +32,9 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         owner.HolderTryGetComponent(IComponentHolder.E_Component.StatsHandler, out ownerStats);
         owner.HolderTryGetComponent(IComponentHolder.E_Component.WeaponStatsModifierHandler, out EntityWeaponsModifierHandler handler);
         OwnerWeaponModifiers = handler.Modifiers;
-        SetNewWeapon(InitialWeapon);
+
+        if (InitialWeapon != null) SetNewWeapon(InitialWeapon);
+        else if (CurrentWeapon != null) SetNewWeapon(CurrentWeapon);
     }
 
     protected virtual void Update()
@@ -44,6 +47,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         }
     }
 
+    [ProPlayButton]
     public void SetNewWeapon(SO_WeaponData data)
     {
         isSetup = false;

@@ -12,7 +12,7 @@ public class Entity : MonoBehaviour, IComponentHolder
 
     [field: SerializeField] public WeaponHandler[] WeaponHandlers { get; private set; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         Inventory = new EntityInventory(this);
     }

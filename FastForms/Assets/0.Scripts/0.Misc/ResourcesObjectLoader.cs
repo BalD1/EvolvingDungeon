@@ -7,14 +7,23 @@ namespace StdNounou
         public const string PREFABS_HOLDER_PATH = "Assets/";
 		public const string PREFABS_UI_HOLDER = "UIPrefabs";
 		public const string PREFABS_AUDIO_HOLDER = "AudioPrefabs";
+		public const string PREFABS_WORLD_HOLDER = "WorldPrefabs";
 
+		private static SO_PrefabsHolder worldPrefabsHolder;
+		private static SO_PrefabsHolder uiPrefabsHolder;
+		private static SO_PrefabsHolder audioPrefabsHolder;
+
+        public static SO_PrefabsHolder GetWorldPrefabs()
+			=> SetOrGetHolder(PREFABS_WORLD_HOLDER, ref worldPrefabsHolder);
         public static SO_PrefabsHolder GetAudioPrefabsHolder()
-			=> GetPrefabsHolder(PREFABS_AUDIO_HOLDER);
+			=> SetOrGetHolder(PREFABS_AUDIO_HOLDER, ref uiPrefabsHolder);
         public static SO_PrefabsHolder GetUIPrefabsHolder()
-			=> GetPrefabsHolder(PREFABS_UI_HOLDER);
-        public static SO_PrefabsHolder GetPrefabsHolder(string holderID)
+			=> SetOrGetHolder(PREFABS_UI_HOLDER, ref audioPrefabsHolder);
+		private static SO_PrefabsHolder SetOrGetHolder(string holderID, ref SO_PrefabsHolder holder)
 		{
-			return Resources.Load<SO_PrefabsHolder>(PREFABS_HOLDER_PATH + holderID);
-		}
+			if (holder != null) return holder;
+			holder = Resources.Load<SO_PrefabsHolder>(PREFABS_HOLDER_PATH + holderID);
+			return holder;
+        }
 	} 
 }
