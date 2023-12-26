@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace StdNounou
 {
-    public class PoolableObject<T> : IDisposable
+    public class ObjectPool<T> : IDisposable
                   where T : Component
     {
         private Queue<T> pool = new Queue<T>();
@@ -14,7 +14,7 @@ namespace StdNounou
 
         private Transform parentContainer;
 
-        public PoolableObject(Func<T> _createAction, Transform _parentContainer, int initialCount = 10, int _maxCapacity = -1)
+        public ObjectPool(Func<T> _createAction, Transform _parentContainer, int initialCount = 10, int _maxCapacity = -1)
         {
             createAction = _createAction;
             parentContainer = _parentContainer;

@@ -7,12 +7,12 @@ namespace StdNounou
         [SerializeField] private Transform poolContainer;
         [SerializeField] private int initialCount;
 
-        private PoolableObject<AudioPlayerSingle> sourcesPool;
+        private ObjectPool<AudioPlayerSingle> sourcesPool;
 
         private void Awake()
         {
             GameObject audioSourcePF = ResourcesObjectLoader.GetAudioPrefabsHolder().GetAsset("SourcePF");
-            sourcesPool = new PoolableObject<AudioPlayerSingle>(_createAction: () => audioSourcePF.Create<AudioPlayerSingle>(), poolContainer, initialCount);
+            sourcesPool = new ObjectPool<AudioPlayerSingle>(_createAction: () => audioSourcePF.Create<AudioPlayerSingle>(), poolContainer, initialCount);
         }
 
         public void PlayClip(AudioClip clip = null, float volume = -1, float pitch = -1)

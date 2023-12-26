@@ -110,7 +110,6 @@ namespace StdNounou
         {
             CurrentHealth -= damagesData.Damages;
             this.OnTookDamages?.Invoke(damagesData);
-            CreateUtils.CreateWorldText(damagesData.Damages.ToString(), this.HealthPopupOffset + (Vector2)this.transform.position, 20, damagesData.IsCrit ? Color.red : Color.white, TextAnchor.MiddleCenter, TextAlignment.Center, 0, 2);
 
             if (body != null) PerformKnockback(damagesData);
         }
@@ -171,6 +170,9 @@ namespace StdNounou
 
         public void SetInvincibilityTimer(float time)
             => InvincibilityTimer = time;
+
+        public Vector2 GetHealthPopupPosition()
+            => this.transform.position + (Vector3)HealthPopupOffset;
 
         #region EDITOR
 

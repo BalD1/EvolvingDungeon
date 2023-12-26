@@ -74,6 +74,8 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         if (!CurrentWeapon.WeaponStats.TryGetStatValue(IStatContainer.E_StatType.AttackCooldown, out cooldown))
             this.LogError($"Weapon {CurrentWeapon} did not have cooldown stat.");
 
+
+        animator.speed = 1/cooldown;
         animator.SetTrigger("Fire");
 
         SO_WeaponBehavior.S_AttackTransform attackTransform = new SO_WeaponBehavior.S_AttackTransform(
@@ -92,6 +94,8 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
             damageType: CurrentWeapon.DamageType
             );
         CurrentWeapon.WeaponBehavior.Execute(ref attackTransform, ref totalStats);
+
+        CurrentWeapon.Particles?.GetNext(attackTransform.Position, attackTransform.Rotation).PlayParticles();
     }
 
     protected abstract void OnCooldownEnded();

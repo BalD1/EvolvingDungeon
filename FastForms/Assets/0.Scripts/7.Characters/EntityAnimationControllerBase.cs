@@ -32,6 +32,6 @@ public class EntityAnimationControllerBase : MonoBehaviour
 
     private void PlayHurtAnimation(IDamageable.DamagesData damagesData)
     {
-        animator.SetTrigger("Damaged");
+        animator.Play("DamagedAnim", 0);
     }
 }
