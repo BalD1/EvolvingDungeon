@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BaseBulletData
   m_EditorClassIdentifier: 
   <Lifetime>k__BackingField: 0.4
-  <CollisionCheckCooldown>k__BackingField: 0.5
+  <CollisionCheckCooldown>k__BackingField: 0.025
   <OverlapRadius>k__BackingField: 0.125
   <TargetMask>k__BackingField:
     serializedVersion: 2

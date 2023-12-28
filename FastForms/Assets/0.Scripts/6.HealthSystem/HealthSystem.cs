@@ -26,7 +26,7 @@ namespace StdNounou
         [field: SerializeField, ReadOnly] public float InvincibilityTimer { get; protected set; }
 
         public event Action<IDamageable.DamagesData> OnTookDamages;
-        public event Action OnHealed;
+        public event Action<float> OnHealed;
         public event Action OnDeath;
 
         private void Reset()
@@ -118,14 +118,17 @@ namespace StdNounou
         {
             float ownerWeight = 0;
             if (!Stats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.Weight, out ownerWeight)) ownerWeight = 0;
-            this.body.AddForce(damagesData.DamagesDirection * (damagesData.KnockbackForce - ownerWeight), ForceMode2D.Impulse);
+
+            float finalForce = damagesData.KnockbackForce - ownerWeight;
+            if (finalForce <= 0) return;
+            this.body.AddForce(damagesData.DamagesDirection * finalForce, ForceMode2D.Impulse);
         }
 
         public void Heal(float amount, bool isCrit)
         {
             if (!IsAlive()) return;
             CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, CurrentMaxHealth);
-            this.OnHealed?.Invoke();
+            this.OnHealed?.Invoke(amount);
         }
 
         public bool IsAlive()

@@ -52,7 +52,6 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
         Vector2 aimerPosition = this.transform.position;
         currentDirection = (aimTargetPosition - aimerPosition);
         currentDirection.Normalize();
-        //this.body.AddForce(currentDirection * totalStats.GetFinalStat(IStatContainer.E_StatType.Speed), ForceMode2D.Impulse);
     }
 
     private IEnumerator CheckForColliders()
@@ -87,28 +86,6 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
                 overlapResult[i] = null;
             }
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        return;
-        Quaternion particlesRotation = Quaternion.FromToRotation(Vector2.up, currentDirection);
-        this.weaponParticles.ImpactParticles?.GetNext(this.transform.position, particlesRotation).PlayParticles();
-        if (!collision.TryGetComponent<IDamageable>(out IDamageable damageable)) return;
-
-        if (this.weaponParticles.EntityHitParticles != null)
-        {
-            Vector2 particlesPos = this.transform.position;
-            particlesPos += new Vector2(
-                x: currentDirection.x * (collision.bounds.extents.x * weaponParticles.EntityHitParticles.OffsetDistance),
-                y: currentDirection.y * (collision.bounds.extents.y * weaponParticles.EntityHitParticles.OffsetDistance));
-
-            this.weaponParticles.EntityHitParticles.GetNext(particlesPos, particlesRotation).PlayParticles();
-        }
-
-        damageable.TryInflictDamages(CreateDamagesData());
-        currentPiercingCount++;
-        if (currentPiercingCount >= totalStats.GetFinalStat(IStatContainer.E_StatType.Piercing)) this.Kill();
     }
 
     private IDamageable.DamagesData CreateDamagesData()

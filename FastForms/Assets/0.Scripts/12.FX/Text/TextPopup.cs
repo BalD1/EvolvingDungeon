@@ -17,6 +17,8 @@ public class TextPopup : MonoBehaviour
 
     [SerializeField, ReadOnly] private SO_TextPopupData textPopupData;
 
+    private static int layerIndex = 0;
+
     public static TextPopup Create(string text, Vector2 pos, SO_TextPopupData textPopupData)
     {
         TextPopup next = PoolsManager.Instance.TextPopupPool.GetNext(pos);
@@ -63,6 +65,9 @@ public class TextPopup : MonoBehaviour
         textMesh.SetText(text);
         currentLifetime = textPopupData.Lifetime;
         targetPosition = textPopupData.TargetPosition + this.transform.position;
+        this.textMesh.sortingOrder = ++layerIndex;
+        this.textMesh.color = textPopupData.TextColor;
+        this.transform.localScale = textPopupData.Scale;
     }
 
     public void SetListIndex(int index)
@@ -70,6 +75,7 @@ public class TextPopup : MonoBehaviour
 
     public void Kill()
     {
+        layerIndex--;
         OnEnd?.Invoke(this);
         PoolsManager.Instance.TextPopupPool.Enqueue(this);
     }
