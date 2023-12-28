@@ -1,14 +1,13 @@
+using com.cyborgAssets.inspectorButtonPro;
 using StdNounou;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class Bullet : MonoBehaviour, IProjectile<Bullet>
 {
-    [SerializeField] private Rigidbody2D body;
     [SerializeField] private SO_BulletData bulletData;
 
-    private Timer lifetimeTimer;
+    private float lifetimeTimer;
 
     private WaitForSeconds cooldownWait;
 
@@ -23,24 +22,28 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     private SO_WeaponData.S_Particles weaponParticles;
 
-
-    private void Reset()
-    {
-        body = this.GetComponent<Rigidbody2D>();
-    }
-
     private void Awake()
     {
         cooldownWait = new WaitForSeconds(bulletData.CollisionCheckCooldown);
-        lifetimeTimer = new Timer(bulletData.Lifetime, Kill);
+    }
+
+    private void Update()
+    {
+        lifetimeTimer -= Time.deltaTime;
+        if (lifetimeTimer <= 0)
+        {
+            this.Kill();
+            return;
+        }
+        this.transform.Translate(currentDirection * totalStats.GetFinalStat(IStatContainer.E_StatType.Speed) * Time.deltaTime); 
     }
 
     public Bullet GetNext(Vector2 position, Quaternion rotation)
-        => PoolsManager.Instance.BulletsPool.GetNext(position, rotation);
+        => PoolsManager.Instance.BulletsPool.GetNext(position, Quaternion.identity);
 
     public void Launch(Vector2 direction, ref SO_WeaponBehavior.S_TotalStats totalStats, ref SO_WeaponData.S_Particles weaponParticles)
     {
-        lifetimeTimer.Reset();
+        lifetimeTimer = bulletData.Lifetime;
         triggerCheckCoroutine = StartCoroutine(CheckForColliders());
         this.totalStats = totalStats;
         this.weaponParticles = weaponParticles;
@@ -49,7 +52,7 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
         Vector2 aimerPosition = this.transform.position;
         currentDirection = (aimTargetPosition - aimerPosition);
         currentDirection.Normalize();
-        this.body.AddForce(currentDirection * totalStats.GetFinalStat(IStatContainer.E_StatType.Speed), ForceMode2D.Impulse);
+        //this.body.AddForce(currentDirection * totalStats.GetFinalStat(IStatContainer.E_StatType.Speed), ForceMode2D.Impulse);
     }
 
     private IEnumerator CheckForColliders()
@@ -127,7 +130,7 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     public void Kill()
     {
-        lifetimeTimer.Stop();
+        lifetimeTimer = 0;
         if (triggerCheckCoroutine != null)
         {
             StopCoroutine(triggerCheckCoroutine);
