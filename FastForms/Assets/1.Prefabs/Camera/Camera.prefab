@@ -56,7 +56,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7415218357953182007}
   - component: {fileID: 7415218357953182008}
-  - component: {fileID: 7440307169692572237}
   m_Layer: 0
   m_Name: Cinemachine
   m_TagString: Untagged
@@ -118,14 +117,6 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 7415218358653041062}
---- !u!81 &7440307169692572237
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7415218357953182006}
-  m_Enabled: 1
 --- !u!1 &7415218358653041061
 GameObject:
   m_ObjectHideFlags: 0

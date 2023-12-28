@@ -37,6 +37,9 @@ public class Timer : ITickable, IDisposable
         Unsubscriber();
     }
 
+    public void Stop()
+        => Unsubscriber();
+
     public void Reset()
         => Reset(maxDuration);
     private void Reset(float newTime)

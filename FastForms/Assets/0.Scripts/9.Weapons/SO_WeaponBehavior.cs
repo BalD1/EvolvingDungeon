@@ -1,5 +1,6 @@
 using StdNounou;
 using UnityEngine;
+using static SO_WeaponData;
 
 public abstract class SO_WeaponBehavior : ScriptableObject
 {
@@ -47,5 +48,5 @@ public abstract class SO_WeaponBehavior : ScriptableObject
 
     public abstract void OnStart();
     public abstract void OnEnd();
-    public abstract void Execute(ref S_AttackTransform attackTransform, ref S_TotalStats totalStats);
+    public abstract void Execute(ref S_AttackTransform attackTransform, ref S_TotalStats totalStats, ref S_Particles particles);
 }

@@ -6,16 +6,23 @@ using UnityEngine;
 public class Bullet : MonoBehaviour, IProjectile<Bullet>
 {
     [SerializeField] private Rigidbody2D body;
-    [SerializeField] private float lifetime = 10;
+    [SerializeField] private SO_BulletData bulletData;
 
-    private Coroutine waitCoroutine;
-    private WaitForSeconds waitBeforeKill;
+    private Timer lifetimeTimer;
+
+    private WaitForSeconds cooldownWait;
+
+    private Collider2D[] overlapResult = new Collider2D[10];
+    private Coroutine triggerCheckCoroutine;
 
     private SO_WeaponBehavior.S_TotalStats totalStats;
 
     private int currentPiercingCount = 0;
 
     private Vector2 currentDirection;
+
+    private SO_WeaponData.S_Particles weaponParticles;
+
 
     private void Reset()
     {
@@ -24,17 +31,19 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     private void Awake()
     {
-        waitBeforeKill = new WaitForSeconds(lifetime);
+        cooldownWait = new WaitForSeconds(bulletData.CollisionCheckCooldown);
+        lifetimeTimer = new Timer(bulletData.Lifetime, Kill);
     }
 
     public Bullet GetNext(Vector2 position, Quaternion rotation)
         => PoolsManager.Instance.BulletsPool.GetNext(position, rotation);
 
-    public void Launch(Vector2 direction, ref SO_WeaponBehavior.S_TotalStats totalStats)
+    public void Launch(Vector2 direction, ref SO_WeaponBehavior.S_TotalStats totalStats, ref SO_WeaponData.S_Particles weaponParticles)
     {
+        lifetimeTimer.Reset();
+        triggerCheckCoroutine = StartCoroutine(CheckForColliders());
         this.totalStats = totalStats;
-
-        waitCoroutine = StartCoroutine(KillCoroutine());
+        this.weaponParticles = weaponParticles;
 
         Vector2 aimTargetPosition = direction;
         Vector2 aimerPosition = this.transform.position;
@@ -43,9 +52,56 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
         this.body.AddForce(currentDirection * totalStats.GetFinalStat(IStatContainer.E_StatType.Speed), ForceMode2D.Impulse);
     }
 
+    private IEnumerator CheckForColliders()
+    {
+        while(true)
+        {
+            yield return cooldownWait;
+            Physics2D.OverlapCircleNonAlloc(this.transform.position, bulletData.OverlapRadius, overlapResult, bulletData.TargetMask);
+            Quaternion particlesRotation;
+
+            for (int i = 0; i < overlapResult.Length; i++)
+            {
+                if (overlapResult[i] == null) continue;
+
+                particlesRotation = Quaternion.FromToRotation(Vector2.up, currentDirection);
+                this.weaponParticles.ImpactParticles?.GetNext(this.transform.position, particlesRotation).PlayParticles();
+                if (!overlapResult[i].TryGetComponent<IDamageable>(out IDamageable damageable)) continue;
+                if (this.weaponParticles.EntityHitParticles != null)
+                {
+                    Vector2 particlesPos = this.transform.position;
+                    particlesPos += new Vector2(
+                        x: currentDirection.x * (overlapResult[i].bounds.extents.x * weaponParticles.EntityHitParticles.OffsetDistance),
+                        y: currentDirection.y * (overlapResult[i].bounds.extents.y * weaponParticles.EntityHitParticles.OffsetDistance));
+
+                    this.weaponParticles.EntityHitParticles.GetNext(particlesPos, particlesRotation).PlayParticles();
+                }
+
+                damageable.TryInflictDamages(CreateDamagesData());
+                currentPiercingCount++;
+                if (currentPiercingCount >= totalStats.GetFinalStat(IStatContainer.E_StatType.Piercing)) this.Kill();
+
+                overlapResult[i] = null;
+            }
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        return;
+        Quaternion particlesRotation = Quaternion.FromToRotation(Vector2.up, currentDirection);
+        this.weaponParticles.ImpactParticles?.GetNext(this.transform.position, particlesRotation).PlayParticles();
         if (!collision.TryGetComponent<IDamageable>(out IDamageable damageable)) return;
+
+        if (this.weaponParticles.EntityHitParticles != null)
+        {
+            Vector2 particlesPos = this.transform.position;
+            particlesPos += new Vector2(
+                x: currentDirection.x * (collision.bounds.extents.x * weaponParticles.EntityHitParticles.OffsetDistance),
+                y: currentDirection.y * (collision.bounds.extents.y * weaponParticles.EntityHitParticles.OffsetDistance));
+
+            this.weaponParticles.EntityHitParticles.GetNext(particlesPos, particlesRotation).PlayParticles();
+        }
 
         damageable.TryInflictDamages(CreateDamagesData());
         currentPiercingCount++;
@@ -71,19 +127,18 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     public void Kill()
     {
-        if (waitCoroutine != null)
+        lifetimeTimer.Stop();
+        if (triggerCheckCoroutine != null)
         {
-            StopCoroutine(waitCoroutine);
-            waitCoroutine = null;
+            StopCoroutine(triggerCheckCoroutine);
+            triggerCheckCoroutine = null;
         }
         currentPiercingCount = 0;
         PoolsManager.Instance.BulletsPool.Enqueue(this);
     }
 
-    private IEnumerator KillCoroutine()
+    private void OnDrawGizmos()
     {
-        yield return waitBeforeKill;
-        waitCoroutine = null;
-        Kill();
+        Gizmos.DrawWireSphere(this.transform.position, bulletData.OverlapRadius);
     }
 }

@@ -4,11 +4,15 @@ using UnityEngine;
 public class PooledParticlesPlayer : MonoBehaviour
 {
     [SerializeField] private ParticleSystem particles;
-    [SerializeField] private readonly E_ParticlesPoolID particlesPoolID;
+    [SerializeField] private E_ParticlesPoolID particlesPoolID;
+
+    [field: SerializeField] public float OffsetDistance { get; private set; } = 1f;
 
     public enum E_ParticlesPoolID
     {
-        Simple,
+        SimpleGunFire,
+        ProjectileImpact,
+        ProjectileEntityHit,
     }
 
     private void Reset()
@@ -18,9 +22,6 @@ public class PooledParticlesPlayer : MonoBehaviour
 
     public PooledParticlesPlayer GetNext(Vector2 position, Quaternion quaternion)
     {
-        //Vector3 angle = quaternion.eulerAngles;
-        //angle.x = -90f;
-        //quaternion.eulerAngles = angle;
         return PoolsManager.Instance.ParticlesDictionary[particlesPoolID].GetNext(position, quaternion);
     }
 

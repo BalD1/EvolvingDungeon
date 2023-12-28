@@ -16,6 +16,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
     [field: SerializeField] public SO_WeaponData InitialWeapon { get; private set; } 
     [field: SerializeField, ReadOnly] public SO_WeaponData CurrentWeapon { get; private set; }
     [field: SerializeField, ReadOnly] public SO_EntityWeaponsModifiers OwnerWeaponModifiers { get; private set; }
+    private StatsHandler currentWeaponModifiers;
 
     [SerializeField, ReadOnly] private float cooldown;
 
@@ -57,6 +58,8 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         CurrentWeapon = data;
         CurrentWeapon.WeaponBehavior.OnStart();
 
+        OwnerWeaponModifiers.TryGetStatsModifiersHandler(CurrentWeapon.WeaponID, out currentWeaponModifiers);
+
         weaponSpriteRenderer.sprite = data.WeaponSprite;
         weaponSpriteRenderer.gameObject.transform.localPosition = data.SpritePivotOffset;
         animator.runtimeAnimatorController = data.WeaponAnimController;
@@ -71,9 +74,8 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         if (CurrentWeapon == null) return;
         if (cooldown > 0) return;
 
-        if (!CurrentWeapon.WeaponStats.TryGetStatValue(IStatContainer.E_StatType.AttackCooldown, out cooldown))
-            this.LogError($"Weapon {CurrentWeapon} did not have cooldown stat.");
-
+        cooldown = GetFinalStat(IStatContainer.E_StatType.AttackCooldown);
+        if (cooldown <= 0) cooldown = 0.01f;
 
         animator.speed = 1/cooldown;
         animator.SetTrigger("Fire");
@@ -93,9 +95,23 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
             ownerStats: this.ownerStats.StatsHandler,
             damageType: CurrentWeapon.DamageType
             );
-        CurrentWeapon.WeaponBehavior.Execute(ref attackTransform, ref totalStats);
+        CurrentWeapon.WeaponBehavior.Execute(ref attackTransform, ref totalStats, ref CurrentWeapon.WeaponParticles);
 
-        CurrentWeapon.Particles?.GetNext(attackTransform.Position, attackTransform.Rotation).PlayParticles();
+        CurrentWeapon.WeaponParticles.FireParticles?.GetNext(attackTransform.Position, attackTransform.Rotation).PlayParticles();
+    }
+
+    public float GetFinalStat(IStatContainer.E_StatType statType)
+    {
+        float weaponStat = 0;
+        float ownerStatValue = 0;
+        float modifierValue = 0;
+
+        if (!CurrentWeapon.WeaponStats.TryGetStatValue(statType, out weaponStat)) weaponStat = 0;
+        if (currentWeaponModifiers != null)
+            if (!currentWeaponModifiers.TryGetFinalStat(statType, out modifierValue)) modifierValue = 0;
+        if (!ownerStats.StatsHandler.TryGetFinalStat(statType, out ownerStatValue)) ownerStatValue = 0;
+
+        return weaponStat + ownerStatValue + modifierValue;
     }
 
     protected abstract void OnCooldownEnded();

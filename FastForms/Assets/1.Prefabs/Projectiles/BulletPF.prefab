@@ -49,6 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 3401202969270200751}
   lifetime: 10
+  collisionCheckCooldown: 0.005
+  overlapRadius: 0.125
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!50 &3401202969270200751
 Rigidbody2D:
   serializedVersion: 4

@@ -166,12 +166,20 @@ namespace StdNounou
             {
                 // else, check if the sum of all permanent bonus is >= of max, return.
                 // else, add it to permanent bonuses
-                if (PermanentBonusStats[data.StatType] >= (BaseStats.Stats[data.StatType].HigherAllowedValue - BaseStats.Stats[data.StatType].Value))
+                if (!PermanentBonusStats.ContainsKey(data.StatType))
+                {
+                    this.LogError($"Stat \"{data.StatType}\" type was not present in dictionnary.");
                     return false;
-                if (PermanentBonusStats.ContainsKey(data.StatType))
-                    PermanentBonusStats[data.StatType] += modifierValue;
+                }
                 else
-                    PermanentBonusStats.Add(data.StatType, modifierValue);
+                {
+                    if (PermanentBonusStats[data.StatType] >= (BaseStats.Stats[data.StatType].HigherAllowedValue - BaseStats.Stats[data.StatType].Value))
+                        return false;
+                    if (PermanentBonusStats.ContainsKey(data.StatType))
+                        PermanentBonusStats[data.StatType] += modifierValue;
+                    else
+                        PermanentBonusStats.Add(data.StatType, modifierValue);
+                }
             }
             return true;
         }
