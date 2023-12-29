@@ -21,6 +21,7 @@ namespace StdNounou
             {
                 System.Action onEnd = () => GameObject.Destroy(gO);
                 Timer t = new Timer(lifeTime, onEnd);
+                t.Start();
             }
 
             return textMesh;

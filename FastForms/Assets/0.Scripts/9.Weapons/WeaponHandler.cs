@@ -1,5 +1,6 @@
 using com.cyborgAssets.inspectorButtonPro;
 using StdNounou;
+using System;
 using UnityEngine;
 
 public abstract class WeaponHandler : MonoBehaviourEventsHandler
@@ -13,6 +14,9 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
     [SerializeField] private Transform firePointTransform;
     [SerializeField] private Animator animator;
 
+    public event Action<WeaponHandler> OnCooldownEnded;
+
+    [field: SerializeField] public ObjectRotator Rotator {  get; private set; }
     [field: SerializeField] public SO_WeaponData InitialWeapon { get; private set; } 
     [field: SerializeField, ReadOnly] public SO_WeaponData CurrentWeapon { get; private set; }
     [field: SerializeField, ReadOnly] public SO_EntityWeaponsModifiers OwnerWeaponModifiers { get; private set; }
@@ -24,16 +28,27 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
 
     protected bool isSetup;
 
+    private void Reset()
+    {
+        Rotator = this.GetComponent<ObjectRotator>();
+    }
+
     protected override void Awake()
     {
         base.Awake();
 
         owner = ownerObj.GetComponent<IComponentHolder>();
-        
-        owner.HolderTryGetComponent(IComponentHolder.E_Component.StatsHandler, out ownerStats);
-        owner.HolderTryGetComponent(IComponentHolder.E_Component.WeaponStatsModifierHandler, out EntityWeaponsModifierHandler handler);
-        OwnerWeaponModifiers = handler.Modifiers;
 
+        owner.HolderTryGetComponent(IComponentHolder.E_Component.StatsHandler, out ownerStats);
+        IComponentHolder.E_Result tryGetResult = owner.HolderTryGetComponent(IComponentHolder.E_Component.WeaponStatsModifierHandler, out EntityWeaponsModifierHandler handler);
+        if (tryGetResult == IComponentHolder.E_Result.Success)
+            OwnerWeaponModifiers = handler.Modifiers;
+        else
+            this.LogError($"Could not get {IComponentHolder.E_Component.WeaponStatsModifierHandler} in holder : {tryGetResult}");
+    }
+
+    protected virtual void Start()
+    {
         if (InitialWeapon != null) SetNewWeapon(InitialWeapon);
         else if (CurrentWeapon != null) SetNewWeapon(CurrentWeapon);
     }
@@ -44,7 +59,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         if (cooldown > 0)
         {
             cooldown -= Time.deltaTime;
-            if (cooldown <= 0) OnCooldownEnded();
+            if (cooldown <= 0) CooldownEnded();
         }
     }
 
@@ -69,7 +84,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         isSetup = true;
     }
 
-    public void Execute()
+    public void Execute(Vector2 targetPosition)
     {
         if (CurrentWeapon == null) return;
         if (cooldown > 0) return;
@@ -83,7 +98,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         SO_WeaponBehavior.S_AttackTransform attackTransform = new SO_WeaponBehavior.S_AttackTransform(
             pos: firePointTransform.position,
             rot: firePointTransform.rotation,
-            targPos: MouseUtils.GetMouseWorldPosition()
+            targPos: targetPosition
             );
 
         StatsHandler weaponModifiers = null;
@@ -114,7 +129,10 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         return weaponStat + ownerStatValue + modifierValue;
     }
 
-    protected abstract void OnCooldownEnded();
+    protected virtual void CooldownEnded()
+    {
+        this.OnCooldownEnded?.Invoke(this);
+    }
 
     public bool SetAllowExecution(bool allow)
         => AllowExecution = allow;

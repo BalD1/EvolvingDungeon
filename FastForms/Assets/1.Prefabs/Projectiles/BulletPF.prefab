@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3401202969270200656}
   - component: {fileID: 3401202969270200657}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BulletPF
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3401202969911797401}
   - component: {fileID: 3401202969911797400}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

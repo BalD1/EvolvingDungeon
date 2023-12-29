@@ -60,8 +60,6 @@ MonoBehaviour:
       Value: {fileID: 537679185538469432}
     - Key: 1
       Value: {fileID: 537679185538469435}
-    - Key: 2
-      Value: {fileID: 7931192097038262386}
   <WeaponHandlers>k__BackingField: []
 --- !u!114 &537679185538469432
 MonoBehaviour:
@@ -91,7 +89,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Stats>k__BackingField: {fileID: 537679185538469432}
   ownerObj: {fileID: 537679185538469437}
-  body: {fileID: 7931192097038262386}
   <CurrentHealth>k__BackingField: 0
   <CurrentMaxHealth>k__BackingField: 0
   <HealthPopupOffset>k__BackingField: {x: 0, y: 0.75}

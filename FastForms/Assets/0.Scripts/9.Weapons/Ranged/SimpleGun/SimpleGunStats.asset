@@ -30,7 +30,7 @@ MonoBehaviour:
         <HigherAllowedValue>k__BackingField: 10
     - Key: 6
       Value:
-        <Value>k__BackingField: 0.1
+        <Value>k__BackingField: 0.5
         <HigherAllowedValue>k__BackingField: 1
     - Key: 7
       Value:

@@ -5,4 +5,7 @@ public interface IState
     public void FixedUpdate();
     public void ExitState();
     public void Conditions();
+
+    public void EventsSubscriber();
+    public void EventsUnSubscriber();
 }

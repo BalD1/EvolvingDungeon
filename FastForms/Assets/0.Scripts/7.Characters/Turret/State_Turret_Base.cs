@@ -1,9 +1,9 @@
 
-public abstract class State_Player_Base : IState
+public abstract class State_Turret_Base : IState
 {
-    protected FSM_Player ownerFSM;
+    protected FSM_Turret ownerFSM;
 
-    public State_Player_Base(FSM_Player ownerFSM)
+    public State_Turret_Base(FSM_Turret ownerFSM)
     {
         this.ownerFSM = ownerFSM;
     }
@@ -13,13 +13,10 @@ public abstract class State_Player_Base : IState
 
     public abstract void Update();
     public abstract void FixedUpdate();
-
     public virtual void ExitState()
         => EventsUnSubscriber();
-
     public abstract void Conditions();
 
     public abstract void EventsSubscriber();
-
     public abstract void EventsUnSubscriber();
 }

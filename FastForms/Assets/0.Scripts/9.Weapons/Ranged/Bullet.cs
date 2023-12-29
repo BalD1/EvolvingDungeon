@@ -65,10 +65,11 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
             for (int i = 0; i < overlapResult.Length; i++)
             {
                 if (overlapResult[i] == null) continue;
+                if (!overlapResult[i].TryGetComponent<IDamageable>(out IDamageable damageable)) continue;
+                if (!damageable.TryInflictDamages(CreateDamagesData())) continue;
 
                 particlesRotation = Quaternion.FromToRotation(Vector2.up, currentDirection);
                 this.weaponParticles.ImpactParticles?.GetNext(this.transform.position, particlesRotation).PlayParticles();
-                if (!overlapResult[i].TryGetComponent<IDamageable>(out IDamageable damageable)) continue;
                 if (this.weaponParticles.EntityHitParticles != null)
                 {
                     Vector2 particlesPos = this.transform.position;
@@ -79,7 +80,6 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
                     this.weaponParticles.EntityHitParticles.GetNext(particlesPos, particlesRotation).PlayParticles();
                 }
 
-                damageable.TryInflictDamages(CreateDamagesData());
                 currentPiercingCount++;
                 if (currentPiercingCount >= totalStats.GetFinalStat(IStatContainer.E_StatType.Piercing)) this.Kill();
 

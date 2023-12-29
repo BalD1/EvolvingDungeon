@@ -1,35 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectRotator : MonoBehaviour
 {
-    [SerializeField] private GameObject ownerObj;
+    [SerializeField] protected GameObject ownerObj;
     protected IComponentHolder ownerComponentsHolder;
-    private ObjectMotor ownerMotor;
+    protected ObjectMotor ownerMotor;
 
     [SerializeField] private float rotationOffset;
     [SerializeField] private float rotationSlerpSpeed;
 
-    private float lookAngle;
-    private bool isUsingGamepad = false;
+    protected float lookAngle;
+    protected bool isUsingGamepad = false;
 
     private void Awake()
     {
         ownerComponentsHolder = ownerObj.GetComponent<IComponentHolder>();
+        if (ownerComponentsHolder == null) return;
         ownerComponentsHolder.HolderTryGetComponent(IComponentHolder.E_Component.Motor, out ownerMotor);
-    }
-
-    private void Update()
-    {
-        SetAim();
-    }
-
-    public void SetAim()
-    {
-        ownerObj.transform.rotation = isUsingGamepad ?
-                                      RotationTowardsMovements(true) :
-                                      RotationTowardsMouse();
     }
 
     public Quaternion RotationTowardsMovements(bool lerpRotation)
@@ -38,8 +25,8 @@ public class ObjectRotator : MonoBehaviour
         lookAngle = Mathf.Atan2(lastDirection.y, lastDirection.x) * Mathf.Rad2Deg;
         Quaternion angle = Quaternion.AngleAxis(lookAngle + 180, Vector3.forward);
 
-        if (!lerpRotation) return angle;
-        return Quaternion.Slerp(this.transform.rotation, angle, Time.deltaTime * rotationSlerpSpeed);
+        if (!lerpRotation) return ownerObj.transform.rotation = angle;
+        return ownerObj.transform.rotation = Quaternion.Slerp(this.transform.rotation, angle, Time.deltaTime * rotationSlerpSpeed);
     }
 
     public Quaternion RotationTowardsMouse()
@@ -52,7 +39,13 @@ public class ObjectRotator : MonoBehaviour
         mousePos.x -= selfPosByCam.x;
         mousePos.y -= selfPosByCam.y;
 
-        lookAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-        return Quaternion.AngleAxis(lookAngle + rotationOffset, Vector3.forward);
+        return RotationTowardsPosition(mousePos);
+    }
+
+    public Quaternion RotationTowardsPosition(Vector2 position)
+    {
+        position -= (Vector2)this.transform.position;
+        lookAngle = Mathf.Atan2(position.y, position.x) * Mathf.Rad2Deg;
+        return ownerObj.transform.rotation = Quaternion.AngleAxis(lookAngle + rotationOffset, Vector3.forward);
     }
 }

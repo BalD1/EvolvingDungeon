@@ -1,23 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Rotator : MonoBehaviour
 {
     [SerializeField] private float rotationOffset = 90;
+    private Camera mainCam;
     private float lookAngle;
 
-    private void Update()
+    private void Awake()
     {
-        this.transform.rotation = RotationTowardsMouse();
+        mainCam = Camera.main;
     }
 
-    public Quaternion RotationTowardsMouse()
+    public Quaternion RoateTowardsMouse()
     {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = 5f;
 
-        Vector3 selfPosByCam = Camera.main.WorldToScreenPoint(this.transform.position);
+        Vector3 selfPosByCam = mainCam.WorldToScreenPoint(this.transform.position);
 
         mousePos.x -= selfPosByCam.x;
         mousePos.y -= selfPosByCam.y;

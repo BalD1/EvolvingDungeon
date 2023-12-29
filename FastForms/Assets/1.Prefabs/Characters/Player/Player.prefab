@@ -109,7 +109,7 @@ MonoBehaviour:
     - Key: 1
       Value: {fileID: 5088509795393490344}
     - Key: 8
-      Value: {fileID: 1245926136278827348}
+      Value: {fileID: 3715356744206707492}
     - Key: 7
       Value: {fileID: 7162031231945334073}
     - Key: 4
@@ -567,7 +567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1245926136278827351}
-  - component: {fileID: 1245926136278827348}
+  - component: {fileID: 3715356744206707492}
   m_Layer: 6
   m_Name: Rotator
   m_TagString: Untagged
@@ -590,7 +590,7 @@ Transform:
   m_Father: {fileID: 1245926135209147417}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1245926136278827348
+--- !u!114 &3715356744206707492
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -599,12 +599,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1245926136278827350}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b61e31c004a7e541a34cb927b5818aa, type: 3}
+  m_Script: {fileID: 11500000, guid: 38f532d29c55c22448a72526da28116a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ownerObj: {fileID: 1245926135209147416}
   rotationOffset: 90
-  rotationSlerpSpeed: 0
+  rotationSlerpSpeed: 1
 --- !u!1 &1245926136598120585
 GameObject:
   m_ObjectHideFlags: 0

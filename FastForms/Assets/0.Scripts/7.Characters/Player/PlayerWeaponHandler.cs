@@ -1,20 +1,25 @@
-using UnityEngine;
 using StdNounou;
 
 public class PlayerWeaponHandler : WeaponHandler
 {
     protected override void EventsSubscriber()
     {
-        PlayerInputsHandlerEvents.OnMouseDown += Execute;
+        PlayerInputsHandlerEvents.OnMouseDown += FireWeapon;
     }
 
     protected override void EventsUnSubscriber()
     {
-        PlayerInputsHandlerEvents.OnMouseDown -= Execute;
+        PlayerInputsHandlerEvents.OnMouseDown -= FireWeapon;
     }
 
-    protected override void OnCooldownEnded()
+    protected override void CooldownEnded()
     {
-        if (PlayerInputsHandler.IsMouseDown) Execute();
+        base.CooldownEnded();
+        if (PlayerInputsHandler.IsMouseDown) FireWeapon();
+    }
+
+    private void FireWeapon()
+    {
+        Execute(MouseUtils.GetMouseWorldPosition());
     }
 }

@@ -20,12 +20,15 @@ public class State_Player_Moving : State_Player_Base
     public override void EnterState()
     {
         base.EnterState();
-        //PlayerInputsHandler.Instance.ForceReadMovements();
     }
 
     public override void Update()
     {
-        ownerFSM.PlayerRotator.RotationTowardsMouse();
+        ownerFSM.PlayerRotator.SetAim();
+        foreach (var item in ownerFSM.OwnerPlayer.WeaponHandlers)
+        {
+            item.Rotator.RotationTowardsMouse();
+        }
     }
 
     public override void FixedUpdate()

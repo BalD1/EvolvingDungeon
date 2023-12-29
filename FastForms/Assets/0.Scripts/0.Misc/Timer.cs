@@ -16,8 +16,6 @@ public class Timer : ITickable, IDisposable
         this.maxDuration =  this.duration = duration;
         this.onEnd = onEnd;
         remainingTicks = (int)(duration / TickManager.TICK_TIMER_MAX);
-
-        Subscriber();
     }
 
     private void Subscriber()
@@ -36,6 +34,9 @@ public class Timer : ITickable, IDisposable
     {
         Unsubscriber();
     }
+
+    public void Start()
+        => Subscriber();
 
     public void Stop()
         => Unsubscriber();
