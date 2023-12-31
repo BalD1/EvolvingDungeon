@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     private WaitForSeconds cooldownWait;
 
-    private Collider2D[] overlapResult = new Collider2D[10];
+    private Collider2D[] overlapResult = new Collider2D[3];
     private Coroutine triggerCheckCoroutine;
 
     private SO_WeaponBehavior.S_TotalStats totalStats;
@@ -21,6 +21,9 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
     private Vector2 currentDirection;
 
     private SO_WeaponData.S_Particles weaponParticles;
+    private bool killScheduled;
+
+    private bool isAlive = false;
 
     private void Awake()
     {
@@ -29,6 +32,8 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     private void Update()
     {
+        if (!isAlive) return;
+
         lifetimeTimer -= Time.deltaTime;
         if (lifetimeTimer <= 0)
         {
@@ -47,11 +52,14 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
         triggerCheckCoroutine = StartCoroutine(CheckForColliders());
         this.totalStats = totalStats;
         this.weaponParticles = weaponParticles;
+        killScheduled = false;
 
         Vector2 aimTargetPosition = direction;
         Vector2 aimerPosition = this.transform.position;
         currentDirection = (aimTargetPosition - aimerPosition);
         currentDirection.Normalize();
+
+        isAlive = true;
     }
 
     private IEnumerator CheckForColliders()
@@ -65,8 +73,17 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
             for (int i = 0; i < overlapResult.Length; i++)
             {
                 if (overlapResult[i] == null) continue;
-                if (!overlapResult[i].TryGetComponent<IDamageable>(out IDamageable damageable)) continue;
-                if (!damageable.TryInflictDamages(CreateDamagesData())) continue;
+                if (!overlapResult[i].TryGetComponent<IDamageable>(out IDamageable damageable))
+                {
+                    killScheduled = true;
+                    overlapResult[i] = null;
+                    continue;
+                }
+                if (!damageable.TryInflictDamages(CreateDamagesData()))
+                {
+                    overlapResult[i] = null;
+                    continue;
+                }
 
                 particlesRotation = Quaternion.FromToRotation(Vector2.up, currentDirection);
                 this.weaponParticles.ImpactParticles?.GetNext(this.transform.position, particlesRotation).PlayParticles();
@@ -81,10 +98,11 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
                 }
 
                 currentPiercingCount++;
-                if (currentPiercingCount >= totalStats.GetFinalStat(IStatContainer.E_StatType.Piercing)) this.Kill();
-
+                if (currentPiercingCount >= totalStats.GetFinalStat(IStatContainer.E_StatType.Piercing)) killScheduled = true;
                 overlapResult[i] = null;
             }
+
+            if (killScheduled) this.Kill();
         }
     }
 
@@ -107,6 +125,8 @@ public class Bullet : MonoBehaviour, IProjectile<Bullet>
 
     public void Kill()
     {
+        isAlive = false;
+        killScheduled = false;
         lifetimeTimer = 0;
         if (triggerCheckCoroutine != null)
         {

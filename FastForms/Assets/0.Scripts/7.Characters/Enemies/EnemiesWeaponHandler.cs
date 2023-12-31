@@ -1,10 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using StdNounou;
 using UnityEngine;
 
 public class EnemiesWeaponHandler : WeaponHandler
 {
-    [field:SerializeField] public Transform Target {  get; private set; }
+    [field: SerializeField] public Transform Target {  get; private set; }
+
+    private BaseAI ownerAI;
 
     protected override void EventsSubscriber()
     {
@@ -17,6 +18,11 @@ public class EnemiesWeaponHandler : WeaponHandler
     protected override void Awake()
     {
         base.Awake();
+        if (owner.HolderTryGetComponent(IComponentHolder.E_Component.AI, out ownerAI) != IComponentHolder.E_Result.Success)
+            this.LogError("Could not find AI component in owner.");
+        else
+            ownerAI.OnTargetChanged += SetTarget;
+
     }
 
     protected override void Start()
@@ -35,7 +41,9 @@ public class EnemiesWeaponHandler : WeaponHandler
     }
 
     public void ExecuteAtTarget()
-        => Execute(Target.position);
+    {
+        Execute(Target.position);
+    }
 
     public void SetTarget(Transform target)
         => this.Target = target;

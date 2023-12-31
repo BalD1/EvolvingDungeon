@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fa78928b4150c440ab0732b1cbdd66c, type: 3}
+  m_Name: DoorSpritesHolder
+  m_EditorClassIdentifier: 
+  assetsDictionnary:
+    _serializedList:
+    - Key: Close
+      Value: {fileID: -717481007, guid: ed487527f200b304196cfca84323a639, type: 3}
+    - Key: Open
+      Value: {fileID: 314213981, guid: ed487527f200b304196cfca84323a639, type: 3}

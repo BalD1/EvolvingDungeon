@@ -1,4 +1,6 @@
 
+using System;
+
 public class FSM_Turret : FSM_Base<FSM_Turret.E_TurretStates>
 {
     public enum E_TurretStates
@@ -12,8 +14,13 @@ public class FSM_Turret : FSM_Base<FSM_Turret.E_TurretStates>
     private EnemiesWeaponHandler[] ownerWeaponHandlers;
     public EnemiesWeaponHandler[] OwnerWeaponHandlers { get => ownerWeaponHandlers; }
 
+    private BaseAI ownerAI;
+    public BaseAI OwnerAI { get => ownerAI; }
+
     private State_Turret_Idle idleState;
     private State_Turret_Attacking attackingState;
+
+    public event Action OnSetup;
 
     protected override void EventsSubscriber()
     {
@@ -31,6 +38,9 @@ public class FSM_Turret : FSM_Base<FSM_Turret.E_TurretStates>
         {
             ownerWeaponHandlers[i] = OwnerTurret.WeaponHandlers[i] as EnemiesWeaponHandler;
         }
+        Owner.HolderTryGetComponent(IComponentHolder.E_Component.AI, out ownerAI);
+
+        this.OnSetup?.Invoke();
     }
 
     protected override void SetupStates()

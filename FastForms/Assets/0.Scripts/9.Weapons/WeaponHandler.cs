@@ -7,7 +7,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
 {
     [Header("Components")]
     [SerializeField] private GameObject ownerObj;
-    private IComponentHolder owner;
+    protected IComponentHolder owner;
     private MonoStatsHandler ownerStats;
 
     [SerializeField] protected SpriteRenderer weaponSpriteRenderer;

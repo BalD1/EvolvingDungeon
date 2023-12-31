@@ -24,7 +24,8 @@ public interface IComponentHolder
         InputsHandler,
         AudioPlayer,
         WeaponStatsModifierHandler,
-        Rotator
+        Rotator,
+        AI,
     }
 
     public enum E_Result

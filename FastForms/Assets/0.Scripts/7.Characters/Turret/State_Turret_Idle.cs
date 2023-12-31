@@ -1,3 +1,4 @@
+using UnityEngine;
 
 [System.Serializable]
 public class State_Turret_Idle : State_Turret_Base
@@ -8,10 +9,12 @@ public class State_Turret_Idle : State_Turret_Base
 
     public override void EventsSubscriber()
     {
+        ownerFSM.OwnerAI.OnTargetChanged += OnTargetChanged;
     }
 
     public override void EventsUnSubscriber()
     {
+        ownerFSM.OwnerAI.OnTargetChanged -= OnTargetChanged;
     }
 
     public override void EnterState()
@@ -34,5 +37,10 @@ public class State_Turret_Idle : State_Turret_Base
 
     public override void Conditions()
     {
+    }
+
+    private void OnTargetChanged(Transform newTarget)
+    {
+        if (newTarget != null) this.ownerFSM.AskSwitchState(FSM_Turret.E_TurretStates.Attacking);
     }
 }

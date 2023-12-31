@@ -12,8 +12,8 @@ public class FSM_Player : FSM_Base<FSM_Player.E_PlayerStates>
     private PlayerMotor playerMotor;
     public PlayerMotor PlayerMotor { get => playerMotor; }
 
-    private PlayerRotator playerRotator;
-    public PlayerRotator PlayerRotator { get => playerRotator; }
+    private PlayerAnimationController ownerAnimationController;
+    public PlayerAnimationController OwnerAnimationController { get => ownerAnimationController; }
 
     private State_Player_Idle idleState;
     private State_Player_Moving movingState;
@@ -30,7 +30,7 @@ public class FSM_Player : FSM_Base<FSM_Player.E_PlayerStates>
     {
         OwnerPlayer = ownerObj.GetComponent<PlayerCharacter>();
         Owner.HolderTryGetComponent<PlayerMotor>(IComponentHolder.E_Component.Motor, out playerMotor);
-        Owner.HolderTryGetComponent<PlayerRotator>(IComponentHolder.E_Component.Rotator, out playerRotator);
+        Owner.HolderTryGetComponent(IComponentHolder.E_Component.AnimationController, out ownerAnimationController);
     }
 
     protected override void SetupStates()

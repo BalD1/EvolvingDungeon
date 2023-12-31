@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: HealDamagesTextPopupData
   m_EditorClassIdentifier: 
   <TravelSpeed>k__BackingField: 5
-  <FadeSpeed>k__BackingField: 5
+  <FadeSpeed>k__BackingField: 2.5
   <Lifetime>k__BackingField: 1
-  <TargetPosition>k__BackingField: {x: 0, y: 1, z: 0}
+  <TargetPosition>k__BackingField: {x: 0, y: 0.5, z: 0}
   <TextColor>k__BackingField: {r: 0.18396229, g: 1, b: 0.21596386, a: 1}
   <Scale>k__BackingField: {x: 1, y: 1}
   <AlphaFadeLifetimeStart>k__BackingField: 25

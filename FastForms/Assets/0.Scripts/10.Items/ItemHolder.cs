@@ -1,11 +1,14 @@
 using StdNounou;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ItemHolder : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
     [SerializeField] private SO_ItemHolderBaseData itemHolderData;
+
+    public UnityEvent OnPickup;
 
     private void Awake()
     {
@@ -25,5 +28,6 @@ public class ItemHolder : MonoBehaviour
         if (player == null) return;
 
         itemHolderData.AddDataToPlayer(this, player.Inventory);
+        OnPickup?.Invoke();
     }
 }

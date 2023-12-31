@@ -1,3 +1,4 @@
+using StdNounou;
 using UnityEngine;
 
 [System.Serializable]
@@ -24,11 +25,11 @@ public class State_Player_Idle : State_Player_Base
 
     public override void Update()
     {
-        ownerFSM.PlayerRotator.SetAim();
         foreach (var item in ownerFSM.OwnerPlayer.WeaponHandlers)
         {
             item.Rotator.RotationTowardsMouse();
         }
+        ownerFSM.OwnerAnimationController.TryFlip(MouseUtils.GetMouseWorldPosition().x < ownerFSM.OwnerPlayer.transform.position.x);
     }
 
     public override void FixedUpdate()

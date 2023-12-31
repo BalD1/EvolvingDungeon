@@ -101,6 +101,7 @@ namespace StdNounou
         {
             CurrentHealth -= damagesData.Damages;
             this.OnTookDamages?.Invoke(damagesData);
+            if (CurrentHealth <= 0) Kill();
         }
 
         public void Heal(float amount, bool isCrit)
@@ -126,13 +127,13 @@ namespace StdNounou
                     StackableTickDamages.Add(data.ID, new List<NewTickDamages>());
 
                 StackableTickDamages[data.ID].Add(new NewTickDamages(data, this, stats));
-                Debug.Log("added " + data.ID);
+                this.Log("added " + data.ID);
                 return true;
             }
 
             if (UniqueTickDamages.ContainsKey(data.ID)) return false;
             UniqueTickDamages.Add(data.ID, new NewTickDamages(data, this, stats));
-            Debug.Log("added " + data.ID);
+            this.Log("added " + data.ID);
 
             return true;
         }
@@ -141,12 +142,12 @@ namespace StdNounou
         {
             if (tick.Data.Stackable)
             {
-                Debug.Log("removed " + tick.Data.ID);
+                this.Log("removed " + tick.Data.ID);
                 StackableTickDamages[tick.Data.ID].Remove(tick);
                 return;
             }
 
-            Debug.Log("removed " + tick.Data.ID);
+            this.Log("removed " + tick.Data.ID);
             UniqueTickDamages.Remove(tick.Data.ID);
         }
 

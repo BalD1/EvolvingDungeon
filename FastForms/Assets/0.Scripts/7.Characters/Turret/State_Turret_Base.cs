@@ -1,5 +1,7 @@
 
-public abstract class State_Turret_Base : IState
+using System;
+
+public abstract class State_Turret_Base : IState, IDisposable
 {
     protected FSM_Turret ownerFSM;
 
@@ -19,4 +21,6 @@ public abstract class State_Turret_Base : IState
 
     public abstract void EventsSubscriber();
     public abstract void EventsUnSubscriber();
+
+    public virtual void Dispose() { }
 }
