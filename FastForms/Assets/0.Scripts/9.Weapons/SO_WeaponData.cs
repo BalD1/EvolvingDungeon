@@ -22,8 +22,8 @@ public class SO_WeaponData : ScriptableObject
     [System.Serializable]
     public struct S_Particles
     {
-        [field: SerializeField] public PooledParticlesPlayer FireParticles { get; private set; }
-        [field: SerializeField] public PooledParticlesPlayer ImpactParticles { get; private set; }
-        [field: SerializeField] public PooledParticlesPlayer EntityHitParticles { get; private set; }
+        [field: SerializeField] public ParticlesPlayer FireParticles { get; private set; }
+        [field: SerializeField] public ParticlesPlayer ImpactParticles { get; private set; }
+        [field: SerializeField] public ParticlesPlayer EntityHitParticles { get; private set; }
     }
 }

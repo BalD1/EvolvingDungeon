@@ -112,7 +112,7 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
             );
         CurrentWeapon.WeaponBehavior.Execute(ref attackTransform, ref totalStats, ref CurrentWeapon.WeaponParticles);
 
-        CurrentWeapon.WeaponParticles.FireParticles?.GetNext(attackTransform.Position, attackTransform.Rotation).PlayParticles();
+        CurrentWeapon.WeaponParticles.FireParticles?.Create(attackTransform.Position, attackTransform.Rotation).PlayParticles();
     }
 
     public float GetFinalStat(IStatContainer.E_StatType statType)

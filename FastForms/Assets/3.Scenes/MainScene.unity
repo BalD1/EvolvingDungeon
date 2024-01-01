@@ -167,9 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179766044b9dbd64bbcc0895483de34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fps: 100
-  lowestFPS: -2147483648
-  highestFPS: 100
+  fps: 71
+  lowestFPS: 26
+  highestFPS: 132
 --- !u!1 &189171276
 GameObject:
   m_ObjectHideFlags: 0
@@ -793,37 +793,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1 &1174855539
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1174855540}
-  m_Layer: 0
-  m_Name: FXContainer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1174855540
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1174855539}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1700019898}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1188848664
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,7 +1134,6 @@ Transform:
   m_Children:
   - {fileID: 1188848665}
   - {fileID: 804306899}
-  - {fileID: 1174855540}
   m_Father: {fileID: 509105288}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1182,7 +1150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dependecies: []
-  bulletsData:
+  fireballData:
     <PoolInitialSize>k__BackingField: 10
     <PoolMaxCapacity>k__BackingField: -1
     <ObjectPrefab>k__BackingField: {fileID: 3401202969270200658, guid: 53f72c696dc649043a36ed79fcb1d1d2, type: 3}
@@ -1192,26 +1160,6 @@ MonoBehaviour:
     <PoolMaxCapacity>k__BackingField: -1
     <ObjectPrefab>k__BackingField: {fileID: 7167388736042394238, guid: 5003def7fb9b7e54bbc513e36c7a6341, type: 3}
     <Container>k__BackingField: {fileID: 804306899}
-  particlesData:
-    _serializedList:
-    - Key: 2
-      Value:
-        <PoolInitialSize>k__BackingField: 10
-        <PoolMaxCapacity>k__BackingField: -1
-        <ObjectPrefab>k__BackingField: {fileID: 1113056611407402392, guid: 0bfc8f73280811548a10cd91db65f00b, type: 3}
-        <Container>k__BackingField: {fileID: 1174855540}
-    - Key: 0
-      Value:
-        <PoolInitialSize>k__BackingField: 10
-        <PoolMaxCapacity>k__BackingField: -1
-        <ObjectPrefab>k__BackingField: {fileID: 2219983903827206967, guid: d3d5655fab9adef48a654d1abd719251, type: 3}
-        <Container>k__BackingField: {fileID: 1174855540}
-    - Key: 1
-      Value:
-        <PoolInitialSize>k__BackingField: 10
-        <PoolMaxCapacity>k__BackingField: -1
-        <ObjectPrefab>k__BackingField: {fileID: 5624096464746985263, guid: fd481b318ea67c54a88859a0711a5748, type: 3}
-        <Container>k__BackingField: {fileID: 1174855540}
 --- !u!1 &1705120229
 GameObject:
   m_ObjectHideFlags: 0

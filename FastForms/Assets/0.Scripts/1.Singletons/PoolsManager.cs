@@ -15,16 +15,15 @@ public class PoolsManager : Singleton<PoolsManager>
         [field: SerializeField] public Transform Container {  get; private set; }
     }
 
-    [SerializeField] private S_PoolData bulletsData;
-    [SerializeField] private ObjectPool<Bullet> bulletsPool; 
-    public ObjectPool<Bullet> BulletsPool { get => bulletsPool; }
+    public Dictionary<string, ObjectPool<ParticlesPlayer>> PooledParticles { get; private set;}
+
+    [SerializeField] private S_PoolData fireballData;
+    [SerializeField] private ObjectPool<Fireball> fireballPool; 
+    public ObjectPool<Fireball> FireballPool { get => fireballPool; }
 
     [SerializeField] private S_PoolData textPopupsData;
     [SerializeField] private ObjectPool<TextPopup> textPopupPool;
     public ObjectPool<TextPopup> TextPopupPool { get => textPopupPool; }
-
-    [SerializeField] private SerializedDictionary<PooledParticlesPlayer.E_ParticlesPoolID, S_PoolData> particlesData;
-    public Dictionary<PooledParticlesPlayer.E_ParticlesPoolID, ObjectPool<PooledParticlesPlayer>> ParticlesDictionary { get; private set; }
 
     protected override void EventsSubscriber()
     {
@@ -43,21 +42,8 @@ public class PoolsManager : Singleton<PoolsManager>
 
     private void InitPools()
     {
-        InitSinglePool(ref bulletsPool, bulletsData);
+        InitSinglePool(ref fireballPool, fireballData);
         InitSinglePool(ref  textPopupPool, textPopupsData);
-
-        ParticlesDictionary = new Dictionary<PooledParticlesPlayer.E_ParticlesPoolID, ObjectPool<PooledParticlesPlayer>>();
-        foreach (PooledParticlesPlayer.E_ParticlesPoolID val in Enum.GetValues(typeof(PooledParticlesPlayer.E_ParticlesPoolID)))
-        {
-            S_PoolData data = particlesData[val];
-            ObjectPool<PooledParticlesPlayer> particlesPool = new ObjectPool<PooledParticlesPlayer>(
-                _createAction: () => data.ObjectPrefab.Create<PooledParticlesPlayer>(),
-                _parentContainer: data.Container,
-                initialCount: data.PoolInitialSize,
-                _maxCapacity: data.PoolMaxCapacity
-                );
-            ParticlesDictionary.Add(val, particlesPool);
-        }
     }
 
     private void InitSinglePool<T>(ref ObjectPool<T> pool, S_PoolData poolData)
