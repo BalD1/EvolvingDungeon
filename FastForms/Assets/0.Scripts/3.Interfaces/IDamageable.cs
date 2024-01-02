@@ -12,6 +12,8 @@ namespace StdNounou
         public abstract void Heal(float amount, bool isCrit);
         public abstract void Kill();
         public bool IsAlive();
+        public bool TryAddTickDammages(SO_TickDamagesData data, float damages, float critChances, float critMultiplier);
+        public void RemoveTickDamage(TickDamages tick);
 
         public class DamagesData : EventArgs
         {

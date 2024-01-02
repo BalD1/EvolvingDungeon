@@ -18,3 +18,4 @@ MonoBehaviour:
   <TargetMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 65
+  <TickDamagesData>k__BackingField: {fileID: 11400000, guid: dba44d7ddb959db43b8fa3639fbf591a, type: 2}

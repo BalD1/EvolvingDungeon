@@ -4,17 +4,22 @@ using UnityEngine;
 namespace StdNounou
 {
     [System.Serializable]
-    public class NewTickDamages : ITickable, IDisposable
+    public class TickDamages : ITickable, IDisposable
     {
         [field: SerializeField, ReadOnly] public SO_TickDamagesData Data { get; private set; }
         [SerializeField, ReadOnly] private HealthSystem handler;
 
-        private MonoStatsHandler ownerStats;
+        private float damages;
+        private float critChances;
+        private float critMultiplier;
+
         private IDamageable.DamagesData damagesData;
 
         private int currentTicks;
 
-        public NewTickDamages(SO_TickDamagesData _data, HealthSystem _handler, MonoStatsHandler stats)
+        private ParticlesPlayer particles;
+
+        public TickDamages(SO_TickDamagesData _data, HealthSystem _handler, float damages, float critChances, float critMultiplier)
         {
             this.Data = _data;
 
@@ -22,9 +27,13 @@ namespace StdNounou
 
             TickManagerEvents.OnTick += OnTick;
 
-            stats = ownerStats;
             damagesData = new IDamageable.DamagesData();
             SetDamagesData();
+            this.damages = damages;
+            this.critChances = critChances;
+            this.critMultiplier = critMultiplier;
+
+            particles = Data.Particles?.Create(_handler.transform);
         }
 
         public void Dispose()
@@ -56,6 +65,7 @@ namespace StdNounou
         {
             TickManagerEvents.OnTick -= OnTick;
             handler.RemoveTickDamage(this);
+            if (particles != null) GameObject.Destroy(particles.gameObject);
         }
 
         public float RemainingTimeInSeconds()
@@ -66,17 +76,14 @@ namespace StdNounou
 
         private void SetDamagesData()
         {
-            ownerStats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.BaseDamages, out float ownerDamagesStat);
-            bool isCrit = RandomExtensions.PercentageChance(Data.CritChances);
+            bool isCrit = RandomExtensions.PercentageChance(critChances * Data.CritChancesModifier);
             damagesData.SetIsCrit(isCrit);
+            float finalDamages = damages * Data.DamagesModifier;
 
-            if (!isCrit) damagesData.SetDamages(ownerDamagesStat * Data.Damages);
+            if (!isCrit) damagesData.SetDamages(finalDamages);
             else
             {
-                float ownerCritMultiplier = -1;
-                if (!ownerStats.StatsHandler.TryGetFinalStat(IStatContainer.E_StatType.CritMultiplier, out ownerCritMultiplier))
-                    ownerCritMultiplier = 1;
-                damagesData.SetDamages(ownerDamagesStat * Data.Damages * ownerCritMultiplier * Data.CritMultiplier);
+                damagesData.SetDamages(finalDamages * (critMultiplier * Data.CritMultiplierModifier));
             }
         }
     } 

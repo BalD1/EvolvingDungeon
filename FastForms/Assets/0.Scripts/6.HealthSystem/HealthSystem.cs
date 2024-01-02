@@ -16,8 +16,8 @@ namespace StdNounou
         [field: SerializeField, ReadOnly] public float CurrentHealth { get; protected set; }
         [field: SerializeField, ReadOnly] public float CurrentMaxHealth { get; protected set; }
 
-        public Dictionary<string, NewTickDamages> UniqueTickDamages { get; private set; } = new Dictionary<string, NewTickDamages>();
-        public Dictionary<string, List<NewTickDamages>> StackableTickDamages { get; private set; } = new Dictionary<string, List<NewTickDamages>>();
+        public Dictionary<string, TickDamages> UniqueTickDamages { get; private set; } = new Dictionary<string, TickDamages>();
+        public Dictionary<string, List<TickDamages>> StackableTickDamages { get; private set; } = new Dictionary<string, List<TickDamages>>();
 
         [field: SerializeField] public Vector2 HealthPopupOffset { get; private set; }
 
@@ -119,26 +119,26 @@ namespace StdNounou
             this.OnDeath?.Invoke();
         }
 
-        public bool TryAddTickDammages(SO_TickDamagesData data, MonoStatsHandler stats)
+        public bool TryAddTickDammages(SO_TickDamagesData data, float damages, float critChances, float critMultiplier)
         {
             if (data.Stackable)
             {
                 if (!StackableTickDamages.ContainsKey(data.ID))
-                    StackableTickDamages.Add(data.ID, new List<NewTickDamages>());
+                    StackableTickDamages.Add(data.ID, new List<TickDamages>());
 
-                StackableTickDamages[data.ID].Add(new NewTickDamages(data, this, stats));
+                StackableTickDamages[data.ID].Add(new TickDamages(data, this, damages, critChances, critMultiplier));
                 this.Log("added " + data.ID);
                 return true;
             }
 
             if (UniqueTickDamages.ContainsKey(data.ID)) return false;
-            UniqueTickDamages.Add(data.ID, new NewTickDamages(data, this, stats));
+            UniqueTickDamages.Add(data.ID, new TickDamages(data, this, damages, critChances, critMultiplier));
             this.Log("added " + data.ID);
 
             return true;
         }
 
-        public void RemoveTickDamage(NewTickDamages tick)
+        public void RemoveTickDamage(TickDamages tick)
         {
             if (tick.Data.Stackable)
             {
