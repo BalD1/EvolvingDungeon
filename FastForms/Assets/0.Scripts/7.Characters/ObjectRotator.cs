@@ -48,4 +48,11 @@ public class ObjectRotator : MonoBehaviour
         lookAngle = Mathf.Atan2(position.y, position.x) * Mathf.Rad2Deg;
         return ownerObj.transform.rotation = Quaternion.AngleAxis(lookAngle + rotationOffset, Vector3.forward);
     }
+
+    public Quaternion GetRotationWithoutOffset()
+    {
+        Vector3 result = this.transform.rotation.eulerAngles;
+        result.z = result.z - rotationOffset;
+        return Quaternion.Euler(result);
+    }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Fireball : MonoBehaviour, IProjectile<Fireball>
 {
     [SerializeField] private SO_FireballData fireballData;
+    [SerializeField] private Transform graphTransform;
 
     private float lifetimeTimer;
 
@@ -39,11 +40,18 @@ public class Fireball : MonoBehaviour, IProjectile<Fireball>
             this.Kill();
             return;
         }
-        this.transform.Translate(currentDirection * totalStats.GetFinalStat(IStatContainer.E_StatType.Speed) * Time.deltaTime); 
+        this.transform.Translate(currentDirection * totalStats.GetFinalStat(IStatContainer.E_StatType.Speed) * Time.deltaTime);
     }
 
     public Fireball GetNext(Vector2 position, Quaternion rotation)
-        => PoolsManager.Instance.FireballPool.GetNext(position, Quaternion.identity);
+    {
+        Fireball next = PoolsManager.Instance.FireballPool.GetNext(position, Quaternion.identity);
+        next.SetGraphRotation(rotation);
+        return next;
+    }
+
+    public void SetGraphRotation(Quaternion rotation)
+        => graphTransform.rotation = rotation;
 
     public void Launch(Vector2 direction, ref SO_WeaponBehavior.S_TotalStats totalStats, ref SO_WeaponData.S_Particles weaponParticles)
     {
@@ -84,6 +92,15 @@ public class Fireball : MonoBehaviour, IProjectile<Fireball>
                     continue;
                 }
 
+                if (RandomExtensions.PercentageChance(fireballData.TickDamagesData.ChancesToApply))
+                {
+                    damageable.TryAddTickDammages(data: fireballData.TickDamagesData, 
+                                                  damages: totalStats.GetFinalStat(IStatContainer.E_StatType.BaseDamages), 
+                                                  critChances: totalStats.GetFinalStat(IStatContainer.E_StatType.CritChances), 
+                                                  critMultiplier: totalStats.GetFinalStat(IStatContainer.E_StatType.CritMultiplier));
+                }
+
+                //Spawn Particles
                 particlesRotation = Quaternion.FromToRotation(Vector2.up, currentDirection);
                 this.weaponParticles.ImpactParticles?.Create(this.transform.position, particlesRotation).PlayParticles();
                 if (this.weaponParticles.EntityHitParticles != null)

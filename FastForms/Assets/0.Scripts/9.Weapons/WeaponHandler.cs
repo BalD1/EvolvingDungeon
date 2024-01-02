@@ -95,6 +95,8 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         animator.speed = 1/cooldown;
         animator.SetTrigger("Fire");
 
+        Quaternion q = Quaternion.Euler(0, 0, 90);
+
         SO_WeaponBehavior.S_AttackTransform attackTransform = new SO_WeaponBehavior.S_AttackTransform(
             pos: firePointTransform.position,
             rot: firePointTransform.rotation,
