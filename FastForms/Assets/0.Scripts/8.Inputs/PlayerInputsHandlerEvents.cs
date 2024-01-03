@@ -22,4 +22,12 @@ public static class PlayerInputsHandlerEvents
 	public static event Action OnCloseYoungestMenu;
 	public static void CloseYoungestMenu_Call(this PlayerInputsHandler inputsHandler)
 		=> OnCloseYoungestMenu?.Invoke();
+
+	public static event Action OnPickupLeft;
+	public static void PickupLeft_Call(this PlayerInputsHandler inputsHandler)
+		=> OnPickupLeft?.Invoke();
+
+	public static event Action OnPickupRight;
+	public static void PickupRight_Call(this PlayerInputsHandler inputsHandler)
+		=> OnPickupRight?.Invoke();
 }

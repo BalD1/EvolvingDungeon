@@ -55,6 +55,17 @@ public class PlayerInputsHandler : PersistentSingleton<PlayerInputsHandler>
         this.CloseYoungestMenu_Call();
     }
 
+    public void OnPickupLeft(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        this.PickupLeft_Call();
+    }
+    public void OnPickupRight(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        this.PickupRight_Call();
+    }
+
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
     }

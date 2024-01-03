@@ -167,9 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179766044b9dbd64bbcc0895483de34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fps: 3
-  lowestFPS: 3
-  highestFPS: 3
+  fps: -2147483648
+  lowestFPS: -2147483648
+  highestFPS: -1
 --- !u!1 &189171276
 GameObject:
   m_ObjectHideFlags: 0
@@ -2019,6 +2019,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5c7acf82-b03f-4c07-bb68-89bd522d76cb
     m_ActionName: UI/Pause[/Keyboard/escape,/XInputControllerWindows/start,/XInputControllerWindows1/start]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1445387283}
+        m_TargetAssemblyTypeName: PlayerInputsHandler, Assembly-CSharp
+        m_MethodName: OnPickupLeft
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 43916343-9905-42de-8422-698ed55c2778
+    m_ActionName: Player/Pickup_Left[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1445387283}
+        m_TargetAssemblyTypeName: PlayerInputsHandler, Assembly-CSharp
+        m_MethodName: OnPickupRight
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 92138da4-f1fe-4c41-88ed-1c9715d65cb5
+    m_ActionName: Player/Pickup_Right
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player

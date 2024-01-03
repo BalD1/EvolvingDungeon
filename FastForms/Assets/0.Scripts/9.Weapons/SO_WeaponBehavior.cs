@@ -4,6 +4,8 @@ using static SO_WeaponData;
 
 public abstract class SO_WeaponBehavior : ScriptableObject
 {
+    [field: SerializeField] public Fireball BulletPrefab { get; private set; }
+
     public struct S_AttackTransform
     {
         [field: SerializeField] public Vector2 Position { get; private set; }

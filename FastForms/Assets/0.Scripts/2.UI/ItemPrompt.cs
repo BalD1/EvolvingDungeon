@@ -15,5 +15,6 @@ public class ItemPrompt : MonoBehaviour
     {
         promptImage.sprite = weaponData.WeaponSprite;
         promptTitleTxt.text = weaponData.WeaponID;
+        promptDescrTxt.text = weaponData.RichDescription;
     }
 }

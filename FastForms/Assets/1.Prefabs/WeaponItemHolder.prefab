@@ -82,6 +82,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 3365027165559138510}
   animator: {fileID: 3365027165342920707}
   itemHolderData: {fileID: 11400000, guid: 59d4035e9a55a364c82670890089a38f, type: 2}
+  pickupOnTrigger: 0
   OnPickup:
     m_PersistentCalls:
       m_Calls:

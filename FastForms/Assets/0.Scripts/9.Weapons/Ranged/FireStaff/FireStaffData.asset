@@ -25,3 +25,24 @@ MonoBehaviour:
   <WeaponSprite>k__BackingField: {fileID: 1397120556, guid: 7e96efe9d9f16ea4b8515f2cf9fd4cb2, type: 3}
   <SpritePivotOffset>k__BackingField: {x: 0, y: -1}
   <FirePointPosition>k__BackingField: {x: 0, y: 0.615}
+  <DescriptionFormat>k__BackingField: {fileID: 11400000, guid: 1569c3427f4da5545aa3e3e940d86440, type: 2}
+  <Description>k__BackingField: 'Damages : 10
+
+    Cooldown : 0,5s
+
+    Crit Chances
+    : 5%
+
+    Crit Multiplier : x1,5
+
+    Damages Type : Flames'
+  <RichDescription>k__BackingField: 'Damages : 10
+
+    Cooldown : 0,5s
+
+    Crit
+    Chances : 5%
+
+    Crit Multiplier : x1,5
+
+    Damages Type : <color=#e25822>Flames</color>'

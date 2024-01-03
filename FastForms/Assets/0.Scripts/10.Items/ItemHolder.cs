@@ -2,17 +2,22 @@ using StdNounou;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ItemHolder<T> : MonoBehaviour
-    where T : ScriptableObject
+public abstract class ItemHolder<T> : MonoBehaviourEventsHandler
+                           where T : ScriptableObject
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
     [SerializeField] private SO_ItemHolderBaseData<T> itemHolderData;
 
+    [SerializeField] protected bool pickupOnTrigger = true;
+
+    [SerializeField, ReadOnly] protected PlayerCharacter playerInRange;
+
     public UnityEvent OnPickup;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if (itemHolderData == null)
         {
             this.LogError($"Item Holder Data {this.gameObject.name} was null.");
@@ -27,12 +32,23 @@ public class ItemHolder<T> : MonoBehaviour
     {
         PlayerCharacter player = collision.GetComponent<PlayerCharacter>();
         if (player == null) return;
-
-        itemHolderData.AddDataToPlayer(this, player.Inventory);
-        OnPickup?.Invoke();
+        playerInRange = player;
+        if (pickupOnTrigger) Pickup();
     }
 
-    protected virtual void OnTriggerExit2D(Collider2D collision) { }
+    protected virtual void OnTriggerExit2D(Collider2D collision)
+    {
+        PlayerCharacter player = collision.GetComponent<PlayerCharacter>();
+        if (player == null) return;
+        playerInRange = null;
+    }
+
+    protected virtual void Pickup()
+    {
+        if (playerInRange == null) return;
+        itemHolderData.AddDataToPlayer(this, playerInRange.Inventory);
+        OnPickup?.Invoke();
+    }
 
     public SO_ItemHolderBaseData<T> GetItemHolderData()
         => itemHolderData;

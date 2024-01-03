@@ -36,6 +36,8 @@ public class ItemPromptContainer : MonoBehaviourEventsHandler
 
     private void OnExitedWeaponPickupRange(WeaponItemHolder weaponItemHolder)
     {
+        if (!currentItemPrompsList.TryGetValue(weaponItemHolder, out ItemPrompt prompt)) return;
+        Destroy(prompt.gameObject);
         currentItemPrompsList.Remove(weaponItemHolder);
     }
 }
