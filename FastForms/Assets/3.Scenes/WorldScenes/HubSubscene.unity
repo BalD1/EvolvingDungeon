@@ -4242,38 +4242,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 595429271}
     m_Modifications:
-    - target: {fileID: 3365027165342920704, guid: 233c0d1e451a63a4fafe3fd69cdba24e, type: 3}
-      propertyPath: itemHolderData
-      value: 
-      objectReference: {fileID: 11400000, guid: 59d4035e9a55a364c82670890089a38f, type: 2}
-    - target: {fileID: 3365027165342920704, guid: 233c0d1e451a63a4fafe3fd69cdba24e, type: 3}
-      propertyPath: OnPickup.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3365027165342920704, guid: 233c0d1e451a63a4fafe3fd69cdba24e, type: 3}
-      propertyPath: OnPickup.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3365027165342920704, guid: 233c0d1e451a63a4fafe3fd69cdba24e, type: 3}
+    - target: {fileID: 1928201405, guid: 233c0d1e451a63a4fafe3fd69cdba24e, type: 3}
       propertyPath: OnPickup.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 833519172}
-    - target: {fileID: 3365027165342920704, guid: 233c0d1e451a63a4fafe3fd69cdba24e, type: 3}
-      propertyPath: OnPickup.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3365027165342920704, guid: 233c0d1e451a63a4fafe3fd69cdba24e, type: 3}
-      propertyPath: OnPickup.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Open
-      objectReference: {fileID: 0}
-    - target: {fileID: 3365027165342920704, guid: 233c0d1e451a63a4fafe3fd69cdba24e, type: 3}
-      propertyPath: OnPickup.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DoorToNextLevel, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3365027165342920704, guid: 233c0d1e451a63a4fafe3fd69cdba24e, type: 3}
-      propertyPath: OnPickup.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 3365027165342920732, guid: 233c0d1e451a63a4fafe3fd69cdba24e, type: 3}
       propertyPath: m_Name
       value: WeaponItemHolder

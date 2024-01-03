@@ -2,11 +2,12 @@ using StdNounou;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ItemHolder : MonoBehaviour
+public class ItemHolder<T> : MonoBehaviour
+    where T : ScriptableObject
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
-    [SerializeField] private SO_ItemHolderBaseData itemHolderData;
+    [SerializeField] private SO_ItemHolderBaseData<T> itemHolderData;
 
     public UnityEvent OnPickup;
 
@@ -33,6 +34,6 @@ public class ItemHolder : MonoBehaviour
 
     protected virtual void OnTriggerExit2D(Collider2D collision) { }
 
-    public SO_ItemHolderBaseData GetItemHolderData()
+    public SO_ItemHolderBaseData<T> GetItemHolderData()
         => itemHolderData;
 }
