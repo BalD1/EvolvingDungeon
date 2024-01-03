@@ -14,4 +14,12 @@ public static class PlayerInputsHandlerEvents
     public static event Action OnMouseUp;
     public static void MouseUp_Call(this PlayerInputsHandler inputsHandler)
         => OnMouseUp?.Invoke();
+
+	public static event Action OnPausePressed;
+	public static void PausePressed_Call(this PlayerInputsHandler inputsHandler)
+		=> OnPausePressed?.Invoke();
+
+	public static event Action OnCloseYoungestMenu;
+	public static void CloseYoungestMenu_Call(this PlayerInputsHandler inputsHandler)
+		=> OnCloseYoungestMenu?.Invoke();
 }

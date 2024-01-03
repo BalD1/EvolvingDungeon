@@ -15,9 +15,9 @@ MonoBehaviour:
   <ID>k__BackingField: FireballFire
   <DamagesType>k__BackingField: 3
   <Stackable>k__BackingField: 0
-  <ChancesToApply>k__BackingField: 50
-  <TicksLifetime>k__BackingField: 20
-  <RequiredTicksToTrigger>k__BackingField: 1
+  <ChancesToApply>k__BackingField: 5
+  <TicksLifetime>k__BackingField: 16
+  <RequiredTicksToTrigger>k__BackingField: 2
   <DamagesModifier>k__BackingField: 0.25
   <CritChancesModifier>k__BackingField: 1
   <CritMultiplierModifier>k__BackingField: 1

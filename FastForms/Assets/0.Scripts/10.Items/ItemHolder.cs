@@ -22,7 +22,7 @@ public class ItemHolder : MonoBehaviour
         animator.SetBool("Spin", true);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerCharacter player = collision.GetComponent<PlayerCharacter>();
         if (player == null) return;
@@ -30,4 +30,9 @@ public class ItemHolder : MonoBehaviour
         itemHolderData.AddDataToPlayer(this, player.Inventory);
         OnPickup?.Invoke();
     }
+
+    protected virtual void OnTriggerExit2D(Collider2D collision) { }
+
+    public SO_ItemHolderBaseData GetItemHolderData()
+        => itemHolderData;
 }

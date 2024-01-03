@@ -43,6 +43,18 @@ public class PlayerInputsHandler : PersistentSingleton<PlayerInputsHandler>
         IsMouseDown = wasMouseDown;
     }
 
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        this.PausePressed_Call();
+    }
+
+    public void CloseYoungestMenu(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        this.CloseYoungestMenu_Call();
+    }
+
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
     }

@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +7,11 @@ namespace StdNounou
     public class UIScreensManager : Singleton<UIScreensManager>
     {
         [field: SerializeField] public Canvas MainCanvas {  get; private set; }
-        [field: SerializeField, ReadOnly] public UIRootScreen CurrentRootScreen {  get; private set; }
-        [field: SerializeField] public bool OpenMainScreenWhenNoneIsOpen { get; private set; }
+        [field: SerializeField, ReadOnly] public UIRootScreen CurrentRootScreen { get; private set; }
+        [field: SerializeField] public bool OpenMainScreenAtStart { get; private set; }
+        [field: SerializeField] public bool OpenMainScreenWhenScreenStackIsEmpty { get; private set; }
+        [field: SerializeField, ShowIf(nameof(OpenMainScreenWhenScreenStackIsEmpty))] public bool OpenMainScreenIfLastWasMainScreen { get; private set; }
+
         [field: SerializeField] public UIMainScreen MainScreen { get; private set; }
         public static Vector2 CanvasSize { get; private set; }
 
@@ -22,6 +26,7 @@ namespace StdNounou
             UIScreenEvents.OnRootScreenWillClose += OnRootScreenClosed;
 
             UIScreenEvents.OnSubScreenStateChanged += OnSubscreenStateChanged;
+            PlayerInputsHandlerEvents.OnCloseYoungestMenu += CloseYoungest;
         }
 
         protected override void EventsUnSubscriber()
@@ -33,6 +38,7 @@ namespace StdNounou
             UIScreenEvents.OnRootScreenWillClose -= OnRootScreenClosed;
 
             UIScreenEvents.OnSubScreenStateChanged -= OnSubscreenStateChanged;
+            PlayerInputsHandlerEvents.OnCloseYoungestMenu -= CloseYoungest;
         }
 
         protected override void Awake()
@@ -49,32 +55,28 @@ namespace StdNounou
                 CanvasSize = new Vector2(canvasRect.width, canvasRect.height);
             }
             base.Awake();
-            MainScreen?.Open(false);
-        }
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                CloseYoungest();
-            }
+            if (OpenMainScreenAtStart)
+                MainScreen?.Open(false);
         }
 
         private void CloseYoungest()
         {
             if (!ScreensStack.TryPeek(out UIScreen screen)) return;
-            if (OpenMainScreenWhenNoneIsOpen && screen == MainScreen) return;
+            if (OpenMainScreenWhenScreenStackIsEmpty && 
+                OpenMainScreenIfLastWasMainScreen && 
+                screen == MainScreen) return;
             screen.Close(true);
         }
 
         private void OpenRootScreen(UIRootScreen newScreen)
         {
+            ReplaceOldRootScreen(newScreen);
             if (ScreensStack.TryPeek(out UIScreen result))
             {
                 if (result != newScreen) ScreensStack.Push(newScreen);
             }
             else ScreensStack.Push(newScreen);
-            ReplaceOldRootScreen(newScreen);
         }
 
         private void ReplaceOldRootScreen(UIRootScreen newScreen)
@@ -84,19 +86,20 @@ namespace StdNounou
             UIRootScreen oldRootScreen = CurrentRootScreen;
             CurrentRootScreen = newScreen;
             oldRootScreen?.Close(true);
+            ScreensStack.Clear();
         }
 
         private void OnRootScreenClosed(UIRootScreen screen)
         {
             if (screen != CurrentRootScreen) return;
+            bool isMainScreen = screen == MainScreen;
 
-            ScreensStack.TryPop(out _);
+            ScreensStack.Clear();
             CurrentRootScreen = null;
-            if (OpenMainScreenWhenNoneIsOpen)
-            {
-                MainScreen?.Open(true);
-                CurrentRootScreen = MainScreen;
-            }
+            if (!OpenMainScreenWhenScreenStackIsEmpty) return;
+            if (isMainScreen && !OpenMainScreenIfLastWasMainScreen) return;
+            MainScreen?.Open(true);
+            CurrentRootScreen = MainScreen;
         }
 
         private void OnSubscreenStateChanged(UISubScreen screen)

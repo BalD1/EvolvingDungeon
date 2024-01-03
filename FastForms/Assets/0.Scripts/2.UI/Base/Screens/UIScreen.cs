@@ -48,6 +48,11 @@ namespace StdNounou
 
             foreach (var item in subScreens)
             {
+                if (item == null)
+                {
+                    this.LogError("Subscreen is null.");
+                    continue;
+                }
                 item.OnStateChanged += OnSubscreenStateChanged;
             }
         }
@@ -59,6 +64,11 @@ namespace StdNounou
 
             foreach (var item in subScreens)
             {
+                if (item == null)
+                {
+                    this.LogError("Subscreen is null.");
+                    continue;
+                }
                 item.OnStateChanged -= OnSubscreenStateChanged;
             }
         }
