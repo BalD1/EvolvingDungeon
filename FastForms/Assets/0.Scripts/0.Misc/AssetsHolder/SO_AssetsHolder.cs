@@ -14,8 +14,8 @@ namespace StdNounou
                 this.LogError("Dictionnary was not initialized or is empty.");
                 return default(T);
             }
-            if (assetsDictionnary.TryGetValue(id, out T sprite)) return sprite;
-            this.LogError($"Could not fint sprite {id} in dictionnary.");
+            if (assetsDictionnary.TryGetValue(id, out T asset)) return asset;
+            this.LogError($"Could not fint asset \"{id}\" in dictionnary.");
             return default(T);
         }
     } 

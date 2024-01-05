@@ -33,7 +33,7 @@ namespace StdNounou
 
         public static Vector3 GetMouseWorldPositionWithZ()
         {
-            return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            return CameraManager.CurrentCam.ScreenToWorldPoint(Input.mousePosition);
         }
         public static Vector3 GetMouseWorldPositionWithZ(Camera cam)
         {
@@ -41,7 +41,7 @@ namespace StdNounou
         }
         public static void GetMouseWorldPositionWithZ(out Vector3 vector)
         {
-            vector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            vector = CameraManager.CurrentCam.ScreenToWorldPoint(Input.mousePosition);
         }
         public static void GetMouseWorldPositionWithZ(out Vector3 vector, Camera cam)
         {

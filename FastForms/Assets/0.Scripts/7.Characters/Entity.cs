@@ -1,9 +1,10 @@
 using AYellowpaper.SerializedCollections;
+using StdNounou;
 using System;
 using UnityEngine;
 using static IComponentHolder;
 
-public class Entity : MonoBehaviour, IComponentHolder
+public class Entity : MonoBehaviourEventsHandler, IComponentHolder
 {
     [field: SerializeField] public SerializedDictionary<E_Component, Component> OwnerComponents { get; private set; }
     public event Action<ComponentChangeEventArgs> OnComponentModified;
@@ -12,8 +13,17 @@ public class Entity : MonoBehaviour, IComponentHolder
 
     [field: SerializeField] public WeaponHandler[] WeaponHandlers { get; private set; }
 
-    protected virtual void Awake()
+    protected override void EventsSubscriber()
     {
+    }
+
+    protected override void EventsUnSubscriber()
+    {
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
         Inventory = new EntityInventory(this);
     }
 
@@ -42,4 +52,7 @@ public class Entity : MonoBehaviour, IComponentHolder
 
         OnComponentModified?.Invoke(new ComponentChangeEventArgs(componentType, component));
     }
+
+    public void Teleport(Vector2 position)
+        => this.transform.position = position;
 }

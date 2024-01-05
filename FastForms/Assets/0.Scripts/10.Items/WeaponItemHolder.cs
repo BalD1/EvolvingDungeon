@@ -30,7 +30,7 @@ public class WeaponItemHolder : ItemHolder<SO_WeaponData>
 
     private void OnLeftPickupInput()
     {
-        base.Pickup();
+        base.Interact();
     }
     private void OnRightPickupInput()
     {

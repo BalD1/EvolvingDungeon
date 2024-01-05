@@ -19,7 +19,7 @@ public class PlayerInputsHandler : PersistentSingleton<PlayerInputsHandler>
     public void OnMovements(InputAction.CallbackContext context)
     {
         MovInputsValue = context.ReadValue<Vector2>();
-        this.MovementsInputs_Call(MovInputsValue);
+        this.MovementsInputs_Call(context);
     }
 
     public void OnMouse(InputAction.CallbackContext context)
@@ -33,14 +33,6 @@ public class PlayerInputsHandler : PersistentSingleton<PlayerInputsHandler>
         }
         IsMouseDown = false;
         this.MouseUp_Call();
-    }
-
-    public void ForceReadMovements()
-    {
-        bool wasMouseDown = IsMouseDown;
-        InputsComponent.currentActionMap.Disable();
-        InputsComponent.currentActionMap.Enable();
-        IsMouseDown = wasMouseDown;
     }
 
     public void OnPause(InputAction.CallbackContext context)
@@ -64,6 +56,12 @@ public class PlayerInputsHandler : PersistentSingleton<PlayerInputsHandler>
     {
         if (!context.performed) return;
         this.PickupRight_Call();
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        this.OnInteract_Call();
     }
 
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)

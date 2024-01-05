@@ -82,6 +82,7 @@ public class Fireball : MonoBehaviour, IProjectile<Fireball>
                 if (overlapResult[i] == null) continue;
                 if (!overlapResult[i].TryGetComponent<IDamageable>(out IDamageable damageable))
                 {
+                    Debug.Log(overlapResult[i].name);
                     killScheduled = true;
                     overlapResult[i] = null;
                     continue;
@@ -114,6 +115,7 @@ public class Fireball : MonoBehaviour, IProjectile<Fireball>
                 }
 
                 currentPiercingCount++;
+                    Debug.Log(overlapResult[i].name);
                 if (currentPiercingCount >= totalStats.GetFinalStat(IStatContainer.E_StatType.Piercing)) killScheduled = true;
                 overlapResult[i] = null;
             }

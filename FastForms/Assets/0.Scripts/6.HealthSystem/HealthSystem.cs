@@ -93,7 +93,6 @@ namespace StdNounou
             if (InvincibilityTimer > 0) return false;
             if (this.Stats.StatsHandler.GetTeam() != SO_BaseStats.E_Team.Neutral &&
                 this.Stats.StatsHandler.GetTeam() == damagesData.DamagerTeam) return false;
-
             InflictDamages(damagesData);
             return true;
         }

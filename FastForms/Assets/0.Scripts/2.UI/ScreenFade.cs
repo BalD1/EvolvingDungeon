@@ -1,7 +1,8 @@
 using StdNounou;
+using System;
 using UnityEngine;
 
-public class ScreenFade : MonoBehaviour
+public class ScreenFade : MonoBehaviourEventsHandler
 {
     [SerializeField] private AlphaHandler alphaHandler;
 
@@ -12,22 +13,39 @@ public class ScreenFade : MonoBehaviour
         alphaHandler = this.GetComponent<AlphaHandler>();
     }
 
-    public void FadeIn()
-        => FadeIn(1);
-    public void FadeIn(float duration)
-        => PerformFade(duration, 0);
-
-    public void FadeOut()
-        => FadeOut(1);
-    public void FadeOut(float duration)
-        => PerformFade(duration, 1);
-
-    private void PerformFade(float duration, float alphaGoal)
+    protected override void EventsSubscriber()
     {
+        ScreenFadeEvents.OnAskHideScreen += HideScreen;
+        ScreenFadeEvents.OnAskShowScreen += ShowScreen;
+    }
+
+    protected override void EventsUnSubscriber()
+    {
+        ScreenFadeEvents.OnAskHideScreen -= HideScreen;
+        ScreenFadeEvents.OnAskShowScreen += ShowScreen;
+    }
+
+    public void HideScreen()
+        => HideScreen(1, null);
+    public void HideScreen(Action onEnd)
+        => HideScreen(1, onEnd);
+    public void HideScreen(float duration, Action onEnd)
+        => PerformFade(duration, 1, onEnd);
+
+    public void ShowScreen()
+        => ShowScreen(1, null);
+    public void ShowScreen(Action onEnd)
+        => ShowScreen(1, onEnd);
+    public void ShowScreen(float duration, Action onEnd)
+        => PerformFade(duration, 0, onEnd);
+
+    private void PerformFade(float duration, float alphaGoal, Action onEnd)
+    {
+        if (alphaGoal == 1) this.StartedHideScreen();
+        else onEnd += () => this.EndedShowScreen();
+
         if (fadeDescr != null)
-        {
             LeanTween.cancel(fadeDescr.uniqueId);
-        }
-        fadeDescr = alphaHandler.LeanAlpha(alphaGoal, duration);
+        fadeDescr = alphaHandler.LeanAlpha(alphaGoal, duration).setOnComplete(onEnd);
     }
 }

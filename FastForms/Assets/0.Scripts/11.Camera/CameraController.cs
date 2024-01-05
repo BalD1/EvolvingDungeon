@@ -5,6 +5,10 @@ public class CameraController : MonoBehaviour
 {
     [field: SerializeField] public CinemachineVirtualCamera CineCamera { get; private set; }
 
+    public void Init()
+    {
+    }
+
     public void StartFollowing(Transform target)
     {
         CineCamera.Follow = target;

@@ -1,5 +1,6 @@
 using StdNounou;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public class State_Player_Moving : State_Player_Base
@@ -47,8 +48,8 @@ public class State_Player_Moving : State_Player_Base
             ownerFSM.AskSwitchState(FSM_Player.E_PlayerStates.Idle);
     }
 
-    private void ReadMovementsInputs(Vector2 value)
+    private void ReadMovementsInputs(InputAction.CallbackContext context)
     {
-        ownerFSM.PlayerMotor.ReadMovementsInputs(value);
+        ownerFSM.PlayerMotor.ReadMovementsInputs(context);
     }
 }

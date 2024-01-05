@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public static class PlayerInputsHandlerEvents
 {
-	public static event Action<Vector2> OnMovementsInputs;
-	public static void MovementsInputs_Call(this PlayerInputsHandler inputsHandler, Vector2 value)
-		=> OnMovementsInputs?.Invoke(value);
+	public static event Action<InputAction.CallbackContext> OnMovementsInputs;
+	public static void MovementsInputs_Call(this PlayerInputsHandler inputsHandler, InputAction.CallbackContext context)
+		=> OnMovementsInputs?.Invoke(context);
 
 	public static event Action OnMouseDown;
 	public static void MouseDown_Call(this PlayerInputsHandler inputsHandler)
@@ -30,4 +31,8 @@ public static class PlayerInputsHandlerEvents
 	public static event Action OnPickupRight;
 	public static void PickupRight_Call(this PlayerInputsHandler inputsHandler)
 		=> OnPickupRight?.Invoke();
+
+	public static event Action OnInteract;
+	public static void OnInteract_Call(this PlayerInputsHandler inputsHandler)
+		=> OnInteract?.Invoke();
 }

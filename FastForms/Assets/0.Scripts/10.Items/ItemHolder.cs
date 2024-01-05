@@ -2,7 +2,7 @@ using StdNounou;
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class ItemHolder<T> : MonoBehaviourEventsHandler
+public abstract class ItemHolder<T> : MonoBehaviourEventsHandler, IInteractable
                            where T : ScriptableObject
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -33,7 +33,7 @@ public abstract class ItemHolder<T> : MonoBehaviourEventsHandler
         PlayerCharacter player = collision.GetComponent<PlayerCharacter>();
         if (player == null) return;
         playerInRange = player;
-        if (pickupOnTrigger) Pickup();
+        if (pickupOnTrigger) Interact();
     }
 
     protected virtual void OnTriggerExit2D(Collider2D collision)
@@ -43,13 +43,13 @@ public abstract class ItemHolder<T> : MonoBehaviourEventsHandler
         playerInRange = null;
     }
 
-    protected virtual void Pickup()
+    public SO_ItemHolderBaseData<T> GetItemHolderData()
+        => itemHolderData;
+
+    public virtual void Interact()
     {
         if (playerInRange == null) return;
         itemHolderData.AddDataToPlayer(this, playerInRange.Inventory);
         OnPickup?.Invoke();
     }
-
-    public SO_ItemHolderBaseData<T> GetItemHolderData()
-        => itemHolderData;
 }

@@ -9,14 +9,18 @@ namespace StdNounou
 		public const string PREFABS_AUDIO_HOLDER = "AudioPrefabs";
 		public const string PREFABS_WORLD_HOLDER = "WorldPrefabs";
 		public const string SO_TEXTPOPUPDATA_HOLDER = "TextPopupDataHolder";
+		public const string SO_ROOMSHANDLER_HOLDER = "RoomsHandlersHolder";
 
         private static SO_PrefabsHolder worldPrefabsHolder;
 		private static SO_PrefabsHolder uiPrefabsHolder;
 		private static SO_PrefabsHolder audioPrefabsHolder;
 		private static SO_ScriptablesHolder textPopupDataHolder;
+		private static SO_ScriptablesHolder roomsHandlersHolder;
 		
 		public static SO_ScriptablesHolder GetTextPopupDataHolder()
 			=> SetOrGetHolder(SO_TEXTPOPUPDATA_HOLDER, ref textPopupDataHolder);
+		public static SO_ScriptablesHolder GetRoomshandlersHolder()
+			=> SetOrGetHolder(SO_ROOMSHANDLER_HOLDER, ref roomsHandlersHolder);
         public static SO_PrefabsHolder GetWorldPrefabs()
 			=> SetOrGetHolder(PREFABS_WORLD_HOLDER, ref worldPrefabsHolder);
         public static SO_PrefabsHolder GetAudioPrefabsHolder()

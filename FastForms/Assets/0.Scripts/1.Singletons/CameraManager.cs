@@ -1,37 +1,36 @@
-using System;
 using UnityEngine;
 using StdNounou;
 
 public class CameraManager : Singleton<CameraManager>
 {
-    [SerializeField] private CameraController mainCamController;
+    [SerializeField] private CameraController currentController;
+    [SerializeField] private Camera mainCam;
+    [SerializeField] private Camera currentCam;
 
-    private PlayerCharacter currentPlayer;
+    public static Camera CurrentCam { get => Instance.currentCam; }
 
     protected override void EventsSubscriber()
     {
-        PlayerCharacterEvents.OnPlayerCreated += OnPlayerCreated;
+        RoomEvents.OnRoomLoaded += OnRoomLoaded;
     }
     
     protected override void EventsUnSubscriber()
     {
-        PlayerCharacterEvents.OnPlayerCreated -= OnPlayerCreated;
+        RoomEvents.OnRoomLoaded -= OnRoomLoaded;
     }
 
     protected override void Awake()
     {
         base.Awake();
-        if (mainCamController == null)
-        {
-            GameObject controllerObj = ResourcesObjectLoader.GetWorldPrefabs().GetAsset("CameraController").Create();
-            mainCamController = controllerObj.GetComponent<CameraController>();
-            mainCamController.CineCamera.MoveToTopOfPrioritySubqueue();
-        }
+
+        if (mainCam == null) mainCam = Camera.main;
+        if (currentCam == null) currentCam = mainCam;
     }
 
-    private void OnPlayerCreated(PlayerCharacter player)
+    private void OnRoomLoaded(Room room)
     {
-        currentPlayer = player;
-        mainCamController.StartFollowing(currentPlayer.transform);
+        currentController = room.RoomCamera;
+        currentController.Init();
+        mainCam.gameObject.SetActive(false);
     }
 }

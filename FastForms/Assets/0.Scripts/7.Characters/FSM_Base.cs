@@ -16,16 +16,44 @@ public abstract class FSM_Base<StateEnum> : MonoBehaviourEventsHandler
 
     public event Action<StateEnum> OnStateChanged;
 
+    protected State_Entity_Paused<StateEnum> pausedState;
+
+    protected const int PAUSED_STATE_VALUE = -100;
+    protected const int IDLE_STATE_VALUE = -99;
+
+    protected override void EventsSubscriber()
+    {
+        ScreenFadeEvents.OnStartedHideScreen += OnStartedHideScreen;
+        ScreenFadeEvents.OnEndedShowScreen += OnEndedShowScreen;
+    }
+
+    protected override void EventsUnSubscriber()
+    {
+        ScreenFadeEvents.OnStartedHideScreen -= OnStartedHideScreen;
+        ScreenFadeEvents.OnEndedShowScreen -= OnEndedShowScreen;
+    }
+
+    protected virtual void OnStartedHideScreen()
+    {
+        StateEnum pausedState = EnumExtensions.FromInt<StateEnum>(PAUSED_STATE_VALUE);
+        AskSwitchState(pausedState);
+    }
+    protected virtual void OnEndedShowScreen()
+    {
+        StateEnum idleState = EnumExtensions.FromInt<StateEnum>(IDLE_STATE_VALUE);
+        AskSwitchState(idleState);
+    }
+
     protected override void Awake()
     {
         Owner = ownerObj.GetComponent<IComponentHolder>();
+        States = new Dictionary<StateEnum, IState>();
+        SetupStates();
         base.Awake();
     }
 
     protected virtual void Start()
     {
-        States = new Dictionary<StateEnum, IState>();
-        SetupStates();
         SetupComponents();
         SetToBaseState();
     }
@@ -44,7 +72,12 @@ public abstract class FSM_Base<StateEnum> : MonoBehaviourEventsHandler
     }
 
     protected abstract void SetupComponents();
-    protected abstract void SetupStates();
+    protected virtual void SetupStates()
+    {
+        pausedState = new State_Entity_Paused<StateEnum>(this);
+        StateEnum val = EnumExtensions.FromInt<StateEnum>(PAUSED_STATE_VALUE);
+        States.Add(val, pausedState);
+    }
 
     protected virtual void Update()
     {
@@ -78,6 +111,14 @@ public abstract class FSM_Base<StateEnum> : MonoBehaviourEventsHandler
     public void AskSwitchState(StateEnum state)
     {
         PerformSwitchState(state);
+    }
+
+    public virtual void ResetMotor()
+    {
+        if (Owner.HolderTryGetComponent(IComponentHolder.E_Component.Motor, out ObjectMotor motor) == IComponentHolder.E_Result.Success)
+        {
+            motor.SetAllVelocity(Vector2.zero);
+        }
     }
 
     protected override void OnDestroy()
