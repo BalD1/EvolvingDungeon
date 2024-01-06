@@ -1,9 +1,9 @@
 using StdNounou;
 using System.Collections.Generic;
-using System.Linq;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
-using static StdNounou.IDamageable;
 
 [RequireComponent(typeof(HealthSystem))]
 public class HealthTextPopupHandler : MonoBehaviourEventsHandler
@@ -19,11 +19,13 @@ public class HealthTextPopupHandler : MonoBehaviourEventsHandler
 
     private void Reset()
     {
+#if UNITY_EDITOR
         targetSystem = this.GetComponent<HealthSystem>();
         normalDamagesData = ResourcesObjectLoader.GetTextPopupDataHolder().GetAsset("NormalDamages") as SO_TextPopupData;
         criticalDamagesData = ResourcesObjectLoader.GetTextPopupDataHolder().GetAsset("CriticalDamages") as SO_TextPopupData;
         healDamagesData = ResourcesObjectLoader.GetTextPopupDataHolder().GetAsset("HealDamages") as SO_TextPopupData;
-        EditorUtility.SetDirty(this);
+        EditorUtility.SetDirty(this); 
+#endif
     }
 
     protected override void EventsSubscriber()

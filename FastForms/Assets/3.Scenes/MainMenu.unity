@@ -947,9 +947,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dependecies: []
   <MainCanvas>k__BackingField: {fileID: 491096010}
+  <CurrentRootScreen>k__BackingField: {fileID: 0}
   <OpenMainScreenAtStart>k__BackingField: 1
   <OpenMainScreenWhenScreenStackIsEmpty>k__BackingField: 1
-  <OpenIfLastWasMainScreen>k__BackingField: 1
+  <OpenMainScreenIfLastWasMainScreen>k__BackingField: 0
   <MainScreen>k__BackingField: {fileID: 1448303026}
 --- !u!1 &1224347291
 GameObject:
@@ -1071,7 +1072,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179766044b9dbd64bbcc0895483de34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fps: 100
+  fps: 4
   lowestFPS: -2147483648
   highestFPS: 100
 --- !u!1 &1448303019
@@ -1725,8 +1726,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <TargetScenes>k__BackingField:
   - MainScene
-  - HubSubscene
   <WaitForInput>k__BackingField: 1
+  <UnloadSubscenesBeforeLoad>k__BackingField: 0
   button: {fileID: 1973798331}
 --- !u!1 &2099042672
 GameObject:

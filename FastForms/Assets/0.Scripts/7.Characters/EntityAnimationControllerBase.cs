@@ -1,4 +1,5 @@
 using StdNounou;
+using System;
 using UnityEngine;
 
 public class EntityAnimationControllerBase : MonoBehaviour
@@ -18,9 +19,14 @@ public class EntityAnimationControllerBase : MonoBehaviour
 
     private bool looksAtRight;
 
+    public Animation anim;
+
     private const string DAMAGED_ANIM_ID = "DamagedAnim";
     private const string DAMAGED_CRIT_ANIM_ID = "DamagedCritAnim";
-    private const string SQUAGE_ANIM_ID = "Squash";
+    private const string SQUASH_ANIM_ID = "Squash";
+    private const string ATTACK_ANIM_ID = "AttackingAnim";
+
+    public event Action AnimNotify_AttackPoint;
 
     private void Awake()
     {
@@ -33,6 +39,7 @@ public class EntityAnimationControllerBase : MonoBehaviour
 
         owner = ownerObj.GetComponent<IComponentHolder>();
         owner.HolderTryGetComponent<HealthSystem>(IComponentHolder.E_Component.HealthSystem, out ownerHealthSystem);
+        ownerHealthSystem.OnDeath += OnOwnerDeath;
         ownerHealthSystem.OnTookDamages += PlayHurtAnimation;
     }
 
@@ -49,7 +56,7 @@ public class EntityAnimationControllerBase : MonoBehaviour
                       DAMAGED_CRIT_ANIM_ID : 
                       DAMAGED_ANIM_ID, 0);
 
-        animator.Play(SQUAGE_ANIM_ID, 1);
+        animator.Play(SQUASH_ANIM_ID, 1);
 
         rendererMaterial.SetFloat(flashAmount, 1);
         if (flashTween != null) LeanTween.cancel(flashTween.uniqueId);
@@ -57,5 +64,21 @@ public class EntityAnimationControllerBase : MonoBehaviour
         {
             rendererMaterial.SetFloat(flashAmount, val);
         }).setOnComplete(() => flashTween = null);
+    }
+
+    public void PlayAttackAnimation()
+    {
+        animator.Play(ATTACK_ANIM_ID);
+    }
+
+    public void Notify_AttackPoint()
+    {
+        AnimNotify_AttackPoint?.Invoke();
+    }
+
+    private void OnOwnerDeath()
+    {
+        ownerHealthSystem.OnDeath -= OnOwnerDeath;
+        ownerHealthSystem.OnTookDamages -= PlayHurtAnimation;
     }
 }

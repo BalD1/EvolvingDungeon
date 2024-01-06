@@ -30,6 +30,7 @@ public class CameraManager : Singleton<CameraManager>
     private void OnRoomLoaded(Room room)
     {
         currentController = room.RoomCamera;
+        currentCam = currentController.Camera;
         currentController.Init();
         mainCam.gameObject.SetActive(false);
     }

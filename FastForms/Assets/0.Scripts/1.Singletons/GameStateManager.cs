@@ -1,5 +1,3 @@
-using UnityEditor;
-using UnityEngine;
 
 namespace StdNounou
 {
@@ -41,11 +39,6 @@ namespace StdNounou
 
             CurrentState = state;
 			this.ChangedGameState(state);
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space)) EditorApplication.isPaused = true;
         }
 
         protected override void EventsSubscriber()

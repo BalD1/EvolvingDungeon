@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b5a406a1bb8a90b4aad50f3e30796a47, type: 3}
-  m_Name: TurretWeaponsModifiers
+  m_Name: IdleBlobWeaponsModifiers
   m_EditorClassIdentifier: 
   baseStats: {fileID: 11400000, guid: c7ee728d9bb10634cb59a9bc89fa39b7, type: 2}

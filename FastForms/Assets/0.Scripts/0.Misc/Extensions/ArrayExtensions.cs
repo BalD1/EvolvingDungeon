@@ -13,7 +13,7 @@ namespace StdNounou
         }
 
         public static bool NotNullOrEmpty<T>(this T[] array)
-            => !(array == null) && !(array.Length == 0);
+            => array != null && array.Length != 0;
 
     } 
 }

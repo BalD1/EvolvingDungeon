@@ -280,6 +280,7 @@ MonoBehaviour:
   ownerObj: {fileID: 1245926135209147416}
   animator: {fileID: 1245926135982689179}
   rendererTarget: {fileID: 1245926136082685104}
+  anim: {fileID: 0}
 --- !u!95 &1245926135982689179
 Animator:
   serializedVersion: 5
@@ -736,6 +737,22 @@ PrefabInstance:
       propertyPath: ownerObj
       value: 
       objectReference: {fileID: 1245926135209147416}
+    - target: {fileID: 8044815657226412781, guid: f27ea820bed74784ca372265b71d247a, type: 3}
+      propertyPath: <RandomOffset>k__BackingField.<Max>k__BackingField.x
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8044815657226412781, guid: f27ea820bed74784ca372265b71d247a, type: 3}
+      propertyPath: <RandomOffset>k__BackingField.<Max>k__BackingField.y
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8044815657226412781, guid: f27ea820bed74784ca372265b71d247a, type: 3}
+      propertyPath: <RandomOffset>k__BackingField.<Min>k__BackingField.x
+      value: -0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8044815657226412781, guid: f27ea820bed74784ca372265b71d247a, type: 3}
+      propertyPath: <RandomOffset>k__BackingField.<Min>k__BackingField.y
+      value: -0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 8044815657226412782, guid: f27ea820bed74784ca372265b71d247a, type: 3}
       propertyPath: m_Name
       value: LeftWeaponHandler

@@ -8,12 +8,6 @@ public class BaseAI : MonoBehaviour
 
     public event Action<Transform> OnTargetChanged;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-            SetTarget(GameObject.FindGameObjectWithTag("Player").transform, true);
-    }
-
     public void SetTarget(Transform target, bool isPlayer)
     {
         CurrentTarget = target;

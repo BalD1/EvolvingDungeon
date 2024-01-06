@@ -126,13 +126,11 @@ namespace StdNounou
                     StackableTickDamages.Add(data.ID, new List<TickDamages>());
 
                 StackableTickDamages[data.ID].Add(new TickDamages(data, this, damages, critChances, critMultiplier));
-                this.Log("added " + data.ID);
                 return true;
             }
 
             if (UniqueTickDamages.ContainsKey(data.ID)) return false;
             UniqueTickDamages.Add(data.ID, new TickDamages(data, this, damages, critChances, critMultiplier));
-            this.Log("added " + data.ID);
 
             return true;
         }
@@ -141,12 +139,10 @@ namespace StdNounou
         {
             if (tick.Data.Stackable)
             {
-                this.Log("removed " + tick.Data.ID);
                 StackableTickDamages[tick.Data.ID].Remove(tick);
                 return;
             }
 
-            this.Log("removed " + tick.Data.ID);
             UniqueTickDamages.Remove(tick.Data.ID);
         }
 

@@ -34,7 +34,7 @@ public class ObjectRotator : MonoBehaviour
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = 5f;
 
-        Vector3 selfPosByCam = CameraManager.CurrentCam.WorldToScreenPoint(ownerObj.transform.position);
+        Vector3 selfPosByCam = CameraManager.CurrentCam.WorldToScreenPoint(this.transform.position);
 
         mousePos.x -= selfPosByCam.x;
         mousePos.y -= selfPosByCam.y;

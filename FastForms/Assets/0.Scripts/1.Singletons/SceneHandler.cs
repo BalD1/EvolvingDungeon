@@ -73,11 +73,17 @@ namespace StdNounou
             while(!op.isDone)
             {
                 if (op.progress >= .9f)
+                {
                     op.allowSceneActivation = (!waitForInputToEndLoading) || (waitForInputToEndLoading && Input.anyKeyDown);
+                    if (isLoading)
+                    {
+                        isLoading = false;
+                        this.LoadingCompleted();
+                    }
+                }
 
                 yield return null;
             }
-            isLoading = false;
         }
 
         public static void ST_TryChangeScene(string sceneName, bool waitForInput)

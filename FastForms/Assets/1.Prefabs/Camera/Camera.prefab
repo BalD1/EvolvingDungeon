@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02cf078bff85d564e876198c940d5455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Camera>k__BackingField: {fileID: 6426308737646681173}
   <CineCamera>k__BackingField: {fileID: 7415218357953182008}
 --- !u!20 &6426308737646681173
 Camera:

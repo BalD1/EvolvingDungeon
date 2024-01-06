@@ -22,6 +22,8 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
     [field: SerializeField, ReadOnly] public SO_EntityWeaponsModifiers OwnerWeaponModifiers { get; private set; }
     private StatsHandler currentWeaponModifiers;
 
+    [field: SerializeField] public MinMax_Vector2 RandomOffset { get; private set; }
+
     [SerializeField, ReadOnly] private float cooldown;
 
     [field: SerializeField, ReadOnly] public bool AllowExecution { get; private set; } = true;
@@ -96,6 +98,13 @@ public abstract class WeaponHandler : MonoBehaviourEventsHandler
         animator.SetTrigger("Fire");
 
         Quaternion q = Quaternion.Euler(0, 0, 90);
+
+        if (RandomOffset != null)
+        {
+            Vector2 rand = RandomOffset.GetRandomInRange();
+            targetPosition.x += rand.x;
+            targetPosition.y += rand.y;
+        }
 
         SO_WeaponBehavior.S_AttackTransform attackTransform = new SO_WeaponBehavior.S_AttackTransform(
             pos: firePointTransform.position,

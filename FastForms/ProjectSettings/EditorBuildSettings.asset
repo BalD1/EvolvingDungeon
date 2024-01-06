@@ -14,12 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/3.Scenes/MainScene.unity
     guid: aca6a5b727223d643b4cd42246a19f73
-  - enabled: 1
-    path: Assets/3.Scenes/WorldScenes/HubSubscene.unity
-    guid: e9c3c139abe6e7041be6f7321427c462
-  - enabled: 1
-    path: Assets/3.Scenes/WorldScenes/Room1_Subscene.unity
-    guid: 97dd230fc112b8049bb7aa8d4ac4fbed
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: c6d67b5285c02384db71e17c603c0e9e, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 579b5d7d2c6af3548aadaa72ef45885e, type: 2}

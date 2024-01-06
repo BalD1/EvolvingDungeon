@@ -1,11 +1,11 @@
 
 using System;
 
-public abstract class State_Turret_Base : IState, IDisposable
+public abstract class State_IdleBlob_Base : IState, IDisposable
 {
-    protected FSM_Turret ownerFSM;
+    protected FSM_IdleBlob ownerFSM;
 
-    public State_Turret_Base(FSM_Turret ownerFSM)
+    public State_IdleBlob_Base(FSM_IdleBlob ownerFSM)
     {
         this.ownerFSM = ownerFSM;
     }

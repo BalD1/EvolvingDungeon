@@ -24,6 +24,7 @@ namespace StdNounou
             this.Data = _data;
 
             this.handler = _handler;
+            handler.OnDeath += OnEnd;
 
             TickManagerEvents.OnTick += OnTick;
 
@@ -64,7 +65,11 @@ namespace StdNounou
         private void OnEnd()
         {
             TickManagerEvents.OnTick -= OnTick;
-            handler.RemoveTickDamage(this);
+            if (handler != null)
+            {
+                handler.OnDeath -= OnEnd;
+                handler.RemoveTickDamage(this);
+            }
             if (particles != null) GameObject.Destroy(particles.gameObject);
         }
 

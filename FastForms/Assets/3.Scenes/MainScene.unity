@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179766044b9dbd64bbcc0895483de34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fps: 3
+  fps: 100
   lowestFPS: -2147483648
   highestFPS: 100
 --- !u!1 &189171276
@@ -1914,7 +1914,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1358939141}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.75, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2563,7 +2563,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1245926135209147417, guid: 6b4644e4346820a4c97112aac5ca3859, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -5.45
       objectReference: {fileID: 0}
     - target: {fileID: 1245926135209147417, guid: 6b4644e4346820a4c97112aac5ca3859, type: 3}
       propertyPath: m_LocalPosition.z

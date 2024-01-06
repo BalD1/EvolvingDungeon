@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050b092c91a13f44c9dd5f5c2549ef27, type: 3}
   m_Name: FireballData
   m_EditorClassIdentifier: 
-  <Lifetime>k__BackingField: 0.4
+  <Lifetime>k__BackingField: 1
   <CollisionCheckCooldown>k__BackingField: 0.005
   <OverlapRadius>k__BackingField: 0.175
   <TargetMask>k__BackingField:
