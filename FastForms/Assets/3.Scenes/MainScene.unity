@@ -167,9 +167,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179766044b9dbd64bbcc0895483de34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fps: 100
-  lowestFPS: -2147483648
-  highestFPS: 100
+  fps: 5
+  lowestFPS: 2147483647
+  highestFPS: -1
 --- !u!1 &189171276
 GameObject:
   m_ObjectHideFlags: 0

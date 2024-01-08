@@ -46,6 +46,7 @@ public class ScreenFade : MonoBehaviourEventsHandler
 
         if (fadeDescr != null)
             LeanTween.cancel(fadeDescr.uniqueId);
-        fadeDescr = alphaHandler.LeanAlpha(alphaGoal, duration).setOnComplete(onEnd);
+        fadeDescr = alphaHandler.LeanAlpha(alphaGoal, duration);
+        fadeDescr.optional.onComplete += onEnd;
     }
 }

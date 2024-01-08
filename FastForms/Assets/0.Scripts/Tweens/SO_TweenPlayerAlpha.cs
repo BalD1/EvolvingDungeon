@@ -26,8 +26,8 @@ namespace StdNounou
             }
 
             tween = alphaHandler.LeanAlpha(toAlpha, GetFinalDuration(data.Modifiers.DurationModifier, playbackSpeed))
-                                .setEase(isReversed ? data.ReversedLeanType : data.ForwardLeanType)
-                                .setOnComplete(OnEnd);
+                                .setEase(isReversed ? data.ReversedLeanType : data.ForwardLeanType);
+            tween.optional.onComplete += OnEnd;
         }
 
         public override void SetAtStart(Component target, TweenSequencePlayer.S_Modifiers modifiers)

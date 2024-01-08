@@ -34,8 +34,7 @@ namespace StdNounou
 
         public override LTDescr LeanAlpha(float alpha, float time)
         {
-            LTDescr tween = Target.LeanAlpha(alpha, time);
-            tween.setOnComplete(SetCanvasState);
+            LTDescr tween = Target.LeanAlpha(alpha, time).setOnComplete(SetCanvasState);
             return tween;
         }
 
